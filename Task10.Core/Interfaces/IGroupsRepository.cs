@@ -10,5 +10,6 @@ namespace Task10.Test.Core.Interfaces
 {
     public interface IGroupsRepository : IRepository<Group>
     {
+        public Task<IEnumerable<Group>> GetGroupsWithCoursesAsync();
     }
 }

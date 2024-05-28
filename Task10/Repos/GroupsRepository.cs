@@ -58,5 +58,10 @@ namespace Task10.Infrastructure.Repos
 
             await _coursesDbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Group>> GetGroupsWithCoursesAsync()
+        {
+            return await _coursesDbContext.Groups.Include(g => g.Course).ToListAsync();
+        }
     }
 }

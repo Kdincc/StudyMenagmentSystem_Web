@@ -10,7 +10,7 @@ using Task10.Test.Core.Models;
 
 namespace Task10.Core.Services
 {
-    public sealed class GroupService(IGroupsRepository groupsRepository) : IGroupService
+    public sealed class GroupsService(IGroupsRepository groupsRepository) : IGroupsService
     {
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
 
@@ -28,14 +28,22 @@ namespace Task10.Core.Services
             await _groupsRepository.DeleteAsync(groupId);
         }
 
-        public Task EditGroupAsync(GroupDto groupDto)
+        public async Task EditGroupAsync(GroupDto groupDto)
         {
-            throw new NotImplementedException();
+            await _groupsRepository.UpdateAsync(groupDto.Id);
         }
 
-        public Task<IEnumerable<GroupDto>> GetGroupsAsync()
+        public async Task<IEnumerable<GroupDto>> GetGroupsAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<Group> groups = await _groupsRepository.GetGroupsWithCoursesAsync();
+
+            return groups.Select(group => new GroupDto
+            {
+                Id = group.Id,
+                CourseId = group.CourseId,
+                Name = group.Name,
+                CourseName = group.Course.Name
+            });
         }
     }
 }

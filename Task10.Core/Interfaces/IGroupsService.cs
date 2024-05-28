@@ -7,7 +7,7 @@ using Task10.Core.DTOs;
 
 namespace Task10.Core.Interfaces
 {
-    public interface IGroupService
+    public interface IGroupsService
     {
         public Task<IEnumerable<GroupDto>> GetGroupsAsync();
 
