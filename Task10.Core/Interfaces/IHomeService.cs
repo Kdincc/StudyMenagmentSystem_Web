@@ -9,6 +9,6 @@ namespace Task10.Core.Interfaces
 {
     public interface IHomeService
     {
-        public HomeDto GetHomeDto();
+        public Task<HomeDto> GetHomeDtoAsync();
     }
 }
