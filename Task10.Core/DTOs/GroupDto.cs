@@ -13,5 +13,7 @@ namespace Task10.Core.DTOs
         public string Name { get; set; }
 
         public int CourseId { get; set; }
+
+        public string CourseName { get; set; }
     }
 }
