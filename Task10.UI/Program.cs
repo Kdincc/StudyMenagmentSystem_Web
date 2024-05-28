@@ -9,7 +9,6 @@ namespace Task10.UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Configuration.AddJsonFile(@"E:\C#\Task10\Task10.UI\appsettings.json");
 
             builder.Services.AddControllersWithViews();
@@ -18,11 +17,9 @@ namespace Task10.UI
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
