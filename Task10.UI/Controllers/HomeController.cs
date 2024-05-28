@@ -1,21 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Task10.Core.DTOs;
+using Task10.Core.Interfaces;
 using Task10.UI.Models;
+using Task10.UI.ViewModels;
 
 namespace Task10.UI.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IHomeService homeService) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHomeService _homeService = homeService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
+            HomeDto homeDto = await _homeService.GetHomeDtoAsync();
 
-        public IActionResult Index()
-        {
-            return View();
+            return View(new HomeViewModel 
+            { 
+                Courses = homeDto.Courses, 
+                Groups = homeDto.Groups, 
+                Students = homeDto.Students 
+            });
         }
 
         public IActionResult Privacy()
