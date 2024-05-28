@@ -15,6 +15,7 @@ namespace Task10.Core
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IGroupsService, GroupsService>();
             
             return services;
         }

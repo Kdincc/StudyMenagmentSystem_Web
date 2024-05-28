@@ -7,7 +7,7 @@ using Task10.UI.ViewModels;
 
 namespace Task10.UI.Controllers
 {
-    public class HomeController(IHomeService homeService) : Controller
+    public sealed class HomeController(IHomeService homeService) : Controller
     {
         private readonly IHomeService _homeService = homeService;
 
