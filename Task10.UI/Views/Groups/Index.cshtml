@@ -1,0 +1,37 @@
+﻿@using Task10.UI.ViewModels;
+
+@model GroupsListViewModel
+
+<div class="main-container">
+    <div class="d-flex flex-row">
+        <h1 class="header-class">Groups</h1>
+        <a class="form-button nav-link text-white ms-auto align-self-end" asp-area="" asp-controller="GroupsEdit" asp-action="CreateGroup">Create</a>
+    </div>
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Functionality</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in Model.Groups)
+            {
+                <tr>
+                    <td>@group.Id</td>
+                    <td>@group.Name</td>
+                    <td>@group.CourseName</td>
+                    <td class="">
+                        <div class="d-flex">
+                            <a class="nav-link text-white" asp-area="" asp-controller="GroupsEdit" asp-action="EditGroup" asp-route-id="@group.Id"><p class="content-table-button">Edit</p></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="GroupsEdit" asp-action="DeleteGroup" asp-route-id="@group.Id"><p class="content-table-button">Delete</p></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
