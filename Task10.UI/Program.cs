@@ -10,6 +10,8 @@ namespace Task10.UI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Configuration.AddJsonFile(@"E:\C#\Task10\Task10.UI\appsettings.json");
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddInfrastructure(builder.Configuration).AddCore();
