@@ -21,9 +21,16 @@ namespace Task10.Infrastructure.Repos
             await _coursesDbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Group entity)
+        public async Task DeleteAsync(int id)
         {
-            _coursesDbContext.Groups.Remove(entity);
+            Group group = await _coursesDbContext.Groups.FindAsync(id);
+
+            if (group == null)
+            {
+                throw new NullReferenceException(nameof(group));
+            }
+
+            _coursesDbContext.Groups.Remove(group);
 
             await _coursesDbContext.SaveChangesAsync();
         }
@@ -38,16 +45,18 @@ namespace Task10.Infrastructure.Repos
             return await _coursesDbContext.Groups.ToListAsync();
         }
 
-        public async Task UpdateAsync(Group entity)
+        public async Task UpdateAsync(int id)
         {
-            _coursesDbContext.Groups.Update(entity);
+            Group group = await _coursesDbContext.Groups.FindAsync(id);
+
+            if (group == null) 
+            {
+                throw new NullReferenceException(nameof(group));
+            }
+
+            _coursesDbContext.Groups.Update(group);
 
             await _coursesDbContext.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<Group>> GetGroupsWithCoursesAsync()
-        {
-            return await _coursesDbContext.Groups.Include(g => g.Course).ToListAsync();
         }
     }
 }

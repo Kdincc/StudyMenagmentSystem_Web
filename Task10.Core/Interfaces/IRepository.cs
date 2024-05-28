@@ -15,8 +15,8 @@ namespace Task10.Core.Interfaces
 
         public Task AddAsync(T entity);
 
-        public Task UpdateAsync(T entity);
+        public Task UpdateAsync(int id);
 
-        public Task DeleteAsync(T entity);
+        public Task DeleteAsync(int id);
     }
 }

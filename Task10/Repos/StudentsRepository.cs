@@ -20,9 +20,16 @@ namespace Task10.Infrastructure.Repos
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Student entity)
+        public async Task DeleteAsync(int id)
         {
-            _dbContext.Students.Remove(entity);
+            Student student = await _dbContext.Students.FindAsync(id);
+
+            if (student is null)
+            {
+                throw new NullReferenceException(nameof(student));
+            }
+
+            _dbContext.Students.Remove(student);
 
             await _dbContext.SaveChangesAsync();
         }
@@ -37,9 +44,16 @@ namespace Task10.Infrastructure.Repos
             return await _dbContext.Students.ToListAsync();
         }
 
-        public async Task UpdateAsync(Student entity)
+        public async Task UpdateAsync(int id)
         {
-            _dbContext.Students.Update(entity);
+            Student student = await _dbContext.Students.FindAsync(id);
+
+            if (student is null)
+            {
+                throw new NullReferenceException(nameof(student));
+            }
+
+            _dbContext.Students.Update(student);
 
             await _dbContext.SaveChangesAsync();
         }
