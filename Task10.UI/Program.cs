@@ -1,3 +1,6 @@
+using Task10.Core;
+using Task10.Infrastructure;
+
 namespace Task10.UI
 {
     public class Program
@@ -8,6 +11,8 @@ namespace Task10.UI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddInfrastructure(builder.Configuration).AddCore();
 
             var app = builder.Build();
 
