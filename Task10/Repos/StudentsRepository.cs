@@ -57,5 +57,10 @@ namespace Task10.Infrastructure.Repos
 
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Student>> GetStudentWithGroupsAsync()
+        {
+            return await _dbContext.Students.Include(s => s.Group).ToListAsync();
+        }
     }
 }

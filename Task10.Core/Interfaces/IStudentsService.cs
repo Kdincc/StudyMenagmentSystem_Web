@@ -13,7 +13,7 @@ namespace Task10.Core.Interfaces
 
         public Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync();
 
-        public Task CreateStudentAsync(string studentName, int groupId);
+        public Task CreateStudentAsync(string studentName, string lastName, int groupId);
 
         public Task DeleteStudentAsync(int studentId);
 

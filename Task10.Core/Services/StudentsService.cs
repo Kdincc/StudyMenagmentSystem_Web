@@ -15,9 +15,9 @@ namespace Task10.Core.Services
         private readonly IStudentsRepository _studentsRepository = studentsRepository;
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
 
-        public async Task CreateStudentAsync(string studentName, int groupId)
+        public async Task CreateStudentAsync(string studentName, string lastName, int groupId)
         {
-            var student = new Student { Name = studentName, GroupId = groupId };
+            var student = new Student { Name = studentName, LastName = lastName, GroupId = groupId };
 
             await _studentsRepository.AddAsync(student);
         }
@@ -69,6 +69,7 @@ namespace Task10.Core.Services
                 students => new StudentDto 
                 {  
                     Name = students.Name, 
+                    LastName = students.LastName,
                     Id = students.Id, 
                     GroupName = students.Group.Name,
                     GroupId = students.GroupId 
