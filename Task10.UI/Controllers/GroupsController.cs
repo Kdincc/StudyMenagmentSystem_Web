@@ -16,6 +16,13 @@ namespace Task10.UI.Controllers
             return View(new GroupsListViewModel { Groups = groups });
         }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _groupsService.DeleteGroupAsync(id);
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> CreateGroup()
         {
             IEnumerable<CourseDto> courses = await _groupsService.GetCoursesAsync();
