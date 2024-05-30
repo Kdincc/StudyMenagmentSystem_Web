@@ -16,6 +16,20 @@ namespace Task10.UI.Controllers
             return View(new GroupsListViewModel { Groups = groups });
         }
 
+        public IActionResult CreateGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup(string name, int courseId)
+        {
+            await _groupsService.CreateGroupAsync(name, courseId);
+
+            return RedirectToAction("Index");
+        }
+
+
         public async Task<IActionResult> EditGroup(int id)
         {
             GroupEditDto groupEditDto = await _groupsService.GetEditGroupDto(id);
