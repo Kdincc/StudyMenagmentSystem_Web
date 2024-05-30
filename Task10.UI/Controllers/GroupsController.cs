@@ -16,9 +16,11 @@ namespace Task10.UI.Controllers
             return View(new GroupsListViewModel { Groups = groups });
         }
 
-        public IActionResult CreateGroup()
+        public async Task<IActionResult> CreateGroup()
         {
-            return View();
+            IEnumerable<CourseDto> courses = await _groupsService.GetCoursesAsync();
+
+            return View(new CreateGroupViewModel { Courses = courses });
         }
 
         [HttpPost]

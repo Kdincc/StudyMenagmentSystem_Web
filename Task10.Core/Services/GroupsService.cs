@@ -39,6 +39,14 @@ namespace Task10.Core.Services
             await _groupsRepository.UpdateAsync(groupId);
         }
 
+        public async Task<IEnumerable<CourseDto>> GetCoursesAsync()
+        {
+            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();
+            IEnumerable<CourseDto> courseDtos = courses.Select(c => new CourseDto { Id = c.Id, Name = c.Name });
+
+            return courseDtos;
+        }
+
         public async Task<GroupEditDto> GetEditGroupDto(int id)
         {
             Group group = await _groupsRepository.GetByIdAsync(id);
@@ -50,8 +58,7 @@ namespace Task10.Core.Services
                 Id = group.Id,
             };
 
-            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();
-            IEnumerable<CourseDto> courseDtos = courses.Select(c => new CourseDto { Id = c.Id, Name = c.Name });
+            IEnumerable<CourseDto> courseDtos = await GetCoursesAsync();
 
             return new GroupEditDto { Group = dto, Courses = courseDtos };
         }

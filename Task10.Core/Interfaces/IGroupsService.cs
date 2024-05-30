@@ -18,5 +18,7 @@ namespace Task10.Core.Interfaces
         public Task DeleteGroupAsync(int groupId);
 
         public Task EditGroupAsync(string name, int groupId, int courseId);
+
+        public Task<IEnumerable<CourseDto>> GetCoursesAsync();
     }
 }

@@ -1,0 +1,23 @@
+﻿@using Task10.UI.ViewModels
+
+@model CreateGroupViewModel
+
+<div class="main-container">
+    <h1 class="header-class">Create Group</h1>
+    @using (Html.BeginForm("CreateGroup", "Groups", FormMethod.Post))
+    {
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <label class="form-label">Name:</label>
+                <input class="form-input" type="text" name="name" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Course:</label>
+                @Html.DropDownList("courseid", new SelectList(Model.Courses, "Id", "Name"), new { @class = "edit-group-select" })
+            </div>
+        </div>
+        <div>
+            <button class="form-button" type="submit">Create</button>
+        </div>
+    }
+</div>
