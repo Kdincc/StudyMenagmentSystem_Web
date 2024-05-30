@@ -9,12 +9,14 @@ namespace Task10.Core.Interfaces
 {
     public interface IGroupsService
     {
-        public Task<IEnumerable<GroupDto>> GetGroupsAsync();
+        public Task<GroupEditDto> GetEditGroupDto(int id);
+
+        public Task<IEnumerable<GroupDto>> GetGroupsWithAsync();
 
         public Task CreateGroupAsync(string groupName, int courseId);
 
         public Task DeleteGroupAsync(int groupId);
 
-        public Task EditGroupAsync(GroupDto groupDto);
+        public Task EditGroupAsync(string name, int groupId, int courseId);
     }
 }

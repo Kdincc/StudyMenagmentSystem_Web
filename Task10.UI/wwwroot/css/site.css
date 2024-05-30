@@ -192,6 +192,33 @@ body {
     transition-duration: 500ms;
 }
 
-    .form-button:hover {
+.form-button:hover {
         background-color: #8584FF;
     }
+
+.edit-group-select{
+    background:transparent;
+    color:white;
+    font-size:22px;
+    width:200px;
+    border-color:transparent;
+    border-bottom-color:white;
+    border-width: 2px;
+    text-align:center;
+    outline:none;
+    transition-duration: 500ms;
+}
+
+.edit-group-option {
+    background-color: transparent;
+}
+
+.edit-group-select:hover,focus {
+    width:300px;
+}
+
+select option {
+    /* Стилизация элементов списка */
+    background-color: rgba(200, 200, 200, 0.5);
+    color: white;
+}

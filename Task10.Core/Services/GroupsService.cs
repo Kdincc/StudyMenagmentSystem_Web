@@ -10,13 +10,14 @@ using Task10.Test.Core.Models;
 
 namespace Task10.Core.Services
 {
-    public sealed class GroupsService(IGroupsRepository groupsRepository) : IGroupsService
+    public sealed class GroupsService(IGroupsRepository groupsRepository, ICoursesRepository coursesRepository) : IGroupsService
     {
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
+        private readonly ICoursesRepository _coursesRepository = coursesRepository;
 
         public async Task CreateGroupAsync(string groupName, int courseId)
         {
-            ArgumentNullException.ThrowIfNull(groupName, nameof(groupName));
+            ArgumentException.ThrowIfNullOrWhiteSpace(groupName, nameof(groupName));
 
             var group = new Group { Name = groupName, CourseId = courseId };
 
@@ -28,12 +29,34 @@ namespace Task10.Core.Services
             await _groupsRepository.DeleteAsync(groupId);
         }
 
-        public async Task EditGroupAsync(GroupDto groupDto)
+        public async Task EditGroupAsync(string name, int groupId, int courseId)
         {
-            await _groupsRepository.UpdateAsync(groupDto.Id);
+            Group group = await _groupsRepository.GetByIdAsync(groupId);
+
+            group.Name = name;
+            group.CourseId = courseId;
+
+            await _groupsRepository.UpdateAsync(groupId);
         }
 
-        public async Task<IEnumerable<GroupDto>> GetGroupsAsync()
+        public async Task<GroupEditDto> GetEditGroupDto(int id)
+        {
+            Group group = await _groupsRepository.GetByIdAsync(id);
+            var dto = new GroupDto
+            {
+                Name =
+                group.Name,
+                CourseId = group.CourseId,
+                Id = group.Id,
+            };
+
+            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();
+            IEnumerable<CourseDto> courseDtos = courses.Select(c => new CourseDto { Id = c.Id, Name = c.Name });
+
+            return new GroupEditDto { Group = dto, Courses = courseDtos };
+        }
+
+        public async Task<IEnumerable<GroupDto>> GetGroupsWithAsync()
         {
             IEnumerable<Group> groups = await _groupsRepository.GetGroupsWithCoursesAsync();
 

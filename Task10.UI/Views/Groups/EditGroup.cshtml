@@ -1,0 +1,53 @@
+﻿@using Task10.UI.ViewModels;
+
+@model EditGroupViewModel
+
+@* Сделать стиль для списка + доделать контроллер *@
+
+<div class="main-container">
+    <h1 class="header-class">Edit Group</h1>
+    
+    @using (Html.BeginForm("EditGroup", "Groups", FormMethod.Post))
+    {
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <label class="form-label">Name:</label>
+                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-input", Value = Model.Name } })
+            </div>
+            <div class="form-group">
+                <label class="form-label">Course:</label>
+                @Html.DropDownListFor(
+                    model => model.CourseId, 
+                    new SelectList(Model.Courses, "Id", "Name"), 
+                    new { @class = "edit-group-select" })
+            </div>
+
+            
+        </div>
+
+        <div>
+            <button class="form-button" type="submit">Save</button>
+        </div>
+    }
+</div>
+
+@* <form asp-action="EditGroup" method="post">
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <label class="form-label" for="Name">Name:</label>
+                <input class="form-input" type="text" id="Name" name="Name" value="@Model.Name" />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Courses">Course:</label>
+                <select class="edit-group-select" id="Courses" name="Courses">
+                    @foreach (var course in Model.Courses)
+                    {
+                        <option class="edit-group-option">@course.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div>
+            <button class="form-button" type="submit">Save</button>
+        </div>
+    </form> *@
