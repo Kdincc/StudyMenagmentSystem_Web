@@ -39,6 +39,11 @@ namespace Task10.UI
                 pattern: "{controller=Groups}/{action=Index}/{id?}"
                 );
 
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Students}/{action=Index}/{id?}"
+                );
+
             app.Run();
         }
     }
