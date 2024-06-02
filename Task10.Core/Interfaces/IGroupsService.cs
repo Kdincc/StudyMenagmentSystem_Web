@@ -15,7 +15,7 @@ namespace Task10.Core.Interfaces
 
         public Task CreateGroupAsync(string groupName, int courseId);
 
-        public Task DeleteGroupAsync(int groupId);
+        public Task<bool> DeleteGroupAsync(int groupId);
 
         public Task EditGroupAsync(string name, int groupId, int courseId);
 

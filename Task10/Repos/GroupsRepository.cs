@@ -63,5 +63,12 @@ namespace Task10.Infrastructure.Repos
         {
             return await _coursesDbContext.Groups.Include(g => g.Course).ToListAsync();
         }
+
+        public async Task<Group> GetGroupWithStudents(int id)
+        {
+            Group group = await _coursesDbContext.Groups.Include(g => g.Students).FirstOrDefaultAsync(g => g.Id == id);
+
+            return group;
+        }
     }
 }

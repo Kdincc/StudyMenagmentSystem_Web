@@ -24,7 +24,7 @@ namespace Task10.Infrastructure.Repos
                 throw new NullReferenceException(nameof(course));
             }
 
-            _dbContext.Courses.Remove(course);
+            var s = _dbContext.Courses.Remove(course);
 
             await _dbContext.SaveChangesAsync();
         }

@@ -24,9 +24,18 @@ namespace Task10.Core.Services
             await _groupsRepository.AddAsync(group);
         }
 
-        public async Task DeleteGroupAsync(int groupId)
+        public async Task<bool> DeleteGroupAsync(int groupId)
         {
+            Group group = await _groupsRepository.GetGroupWithStudents(groupId);
+
+            if (group.Students.Count != 0) 
+            {
+                return false;
+            }
+
             await _groupsRepository.DeleteAsync(groupId);
+
+            return true;
         }
 
         public async Task EditGroupAsync(string name, int groupId, int courseId)

@@ -27,17 +27,18 @@ namespace Task10.Core.Services
             await _studentsRepository.DeleteAsync(studentId);
         }
 
-        public async Task EditStudentAsync(string name, int studentId, int groupId)
+        public async Task EditStudentAsync(string name, string lastName, int studentId, int groupId)
         {
             Student student = await _studentsRepository.GetByIdAsync(studentId);
 
             student.Name = name;
+            student.LastName = lastName;
             student.GroupId = groupId;
 
             await _studentsRepository.UpdateAsync(studentId);
         }
 
-        public async Task<StudentEditDto> GetEditStudentDto(int id)
+        public async Task<StudentEditDto> GetEditStudentDtoAsync(int id)
         {
             Student student = await _studentsRepository.GetByIdAsync(id);
             var studentDto = new StudentDto 

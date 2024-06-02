@@ -18,7 +18,14 @@ namespace Task10.UI.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            await _groupsService.DeleteGroupAsync(id);
+            bool isDeleted = await _groupsService.DeleteGroupAsync(id);
+
+            if (isDeleted)
+            {
+                return RedirectToAction("Index");
+            }
+
+            TempData["ErrorMessage"] = "Can`t delete non empty groups!";
 
             return RedirectToAction("Index");
         }

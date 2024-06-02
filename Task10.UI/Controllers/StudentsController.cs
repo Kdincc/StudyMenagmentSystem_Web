@@ -16,6 +16,36 @@ namespace Task10.UI.Controllers
             return View(new StudentListViewModel { Students = students });
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id);
+
+            return View(
+                new EditStudentViewModel 
+                {
+                    Name = studentEditDto.Student.Name, 
+                    LastName = studentEditDto.Student.LastName, 
+                    GroupId = studentEditDto.Student.GroupId,
+                    Groups = studentEditDto.Groups,
+                    Id = studentEditDto.Student.Id
+                });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel)
+        {
+            await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId);
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _studentsService.DeleteStudentAsync(id);
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Create()
         {
             IEnumerable<GroupDto> groups = await _studentsService.GetGroupsAsync();

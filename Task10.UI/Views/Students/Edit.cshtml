@@ -1,11 +1,11 @@
 ﻿@using Task10.UI.ViewModels;
 
-@model EditGroupViewModel
+@model EditStudentViewModel
 
 <div class="main-container">
-    <h1 class="header-class">Edit Group</h1>
+    <h1 class="header-class">Edit Student</h1>
     
-    @using (Html.BeginForm("EditGroup", "Groups", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Students", FormMethod.Post))
     {
         <div class="d-flex flex-column">
             <div class="form-group">
@@ -13,10 +13,10 @@
                 @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-input", Value = Model.Name } })
             </div>
             <div class="form-group">
-                <label class="form-label">Course:</label>
+                <label class="form-label">Group:</label>
                 @Html.DropDownListFor(
-                    model => model.CourseId, 
-                    new SelectList(Model.Courses, "Id", "Name"), 
+                    model => model.GroupId, 
+                    new SelectList(Model.Groups, "Id", "Name"), 
                     new { @class = "edit-group-select" })
             </div>
 

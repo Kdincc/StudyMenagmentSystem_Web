@@ -103,6 +103,16 @@ body {
         color: #8584FF;
     }
 
+.content-table-button-delete {
+    color: white;
+    font-size: 27px;
+    transition-duration: 500ms;
+}
+
+    .content-table-button-delete:hover {
+        color: #F20C54
+    }
+
 .content-table {
     border-collapse: collapse;
     margin: 25px;

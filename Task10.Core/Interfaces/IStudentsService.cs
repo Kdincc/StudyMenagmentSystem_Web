@@ -9,7 +9,7 @@ namespace Task10.Core.Interfaces
 {
     public interface IStudentsService
     {
-        public Task<StudentEditDto> GetEditStudentDto(int id);
+        public Task<StudentEditDto> GetEditStudentDtoAsync(int id);
 
         public Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync();
 
@@ -17,7 +17,7 @@ namespace Task10.Core.Interfaces
 
         public Task DeleteStudentAsync(int studentId);
 
-        public Task EditStudentAsync(string name, int studentId, int groupId);
+        public Task EditStudentAsync(string name, string lastName, int studentId, int groupId);
 
         public Task<IEnumerable<GroupDto>> GetGroupsAsync();
     }
