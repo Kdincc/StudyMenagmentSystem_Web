@@ -24,11 +24,6 @@ namespace Task10.Infrastructure.Repos
         {
             Student student = await _dbContext.Students.FindAsync(id);
 
-            if (student is null)
-            {
-                throw new NullReferenceException(nameof(student));
-            }
-
             _dbContext.Students.Remove(student);
 
             await _dbContext.SaveChangesAsync();
@@ -47,11 +42,6 @@ namespace Task10.Infrastructure.Repos
         public async Task UpdateAsync(int id)
         {
             Student student = await _dbContext.Students.FindAsync(id);
-
-            if (student is null)
-            {
-                throw new NullReferenceException(nameof(student));
-            }
 
             _dbContext.Students.Update(student);
 

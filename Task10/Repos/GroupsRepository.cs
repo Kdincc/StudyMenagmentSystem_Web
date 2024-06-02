@@ -25,11 +25,6 @@ namespace Task10.Infrastructure.Repos
         {
             Group group = await _coursesDbContext.Groups.FindAsync(id);
 
-            if (group == null)
-            {
-                throw new NullReferenceException(nameof(group));
-            }
-
             _coursesDbContext.Groups.Remove(group);
 
             await _coursesDbContext.SaveChangesAsync();
@@ -48,11 +43,6 @@ namespace Task10.Infrastructure.Repos
         public async Task UpdateAsync(int id)
         {
             Group group = await _coursesDbContext.Groups.FindAsync(id);
-
-            if (group == null) 
-            {
-                throw new NullReferenceException(nameof(group));
-            }
 
             _coursesDbContext.Groups.Update(group);
 

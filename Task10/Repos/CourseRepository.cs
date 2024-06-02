@@ -19,12 +19,7 @@ namespace Task10.Infrastructure.Repos
         {
             Course course = await _dbContext.Courses.FindAsync(id);
 
-            if (course is null)
-            {
-                throw new NullReferenceException(nameof(course));
-            }
-
-            var s = _dbContext.Courses.Remove(course);
+            _dbContext.Courses.Remove(course);
 
             await _dbContext.SaveChangesAsync();
         }
@@ -42,11 +37,6 @@ namespace Task10.Infrastructure.Repos
         public async Task UpdateAsync(int id)
         {
             Course course = await _dbContext.Courses.FindAsync(id);
-
-            if (course is null) 
-            {
-                throw new NullReferenceException(nameof(course));
-            }
 
             _dbContext.Courses.Update(course);
 
