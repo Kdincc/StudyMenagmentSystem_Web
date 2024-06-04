@@ -17,8 +17,6 @@ namespace Task10.Core.Services
 
         public async Task CreateGroupAsync(string groupName, int courseId)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(groupName, nameof(groupName));
-
             var group = new Group { Name = groupName, CourseId = courseId };
 
             await _groupsRepository.AddAsync(group);
@@ -72,7 +70,7 @@ namespace Task10.Core.Services
             return new GroupEditDto { Group = dto, Courses = courseDtos };
         }
 
-        public async Task<IEnumerable<GroupDto>> GetGroupsWithAsync()
+        public async Task<IEnumerable<GroupDto>> GetGroupsWithCourseNamesAsync()
         {
             IEnumerable<Group> groups = await _groupsRepository.GetGroupsWithCoursesAsync();
 

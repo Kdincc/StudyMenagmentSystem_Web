@@ -11,7 +11,7 @@ namespace Task10.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<GroupDto> groups =  await _groupsService.GetGroupsWithAsync();
+            IEnumerable<GroupDto> groups =  await _groupsService.GetGroupsWithCourseNamesAsync();
 
             return View(new GroupsListViewModel { Groups = groups });
         }

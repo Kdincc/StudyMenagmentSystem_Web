@@ -11,7 +11,7 @@ namespace Task10.Core.Interfaces
     {
         public Task<GroupEditDto> GetEditGroupDto(int id);
 
-        public Task<IEnumerable<GroupDto>> GetGroupsWithAsync();
+        public Task<IEnumerable<GroupDto>> GetGroupsWithCourseNamesAsync();
 
         public Task CreateGroupAsync(string groupName, int courseId);
 
