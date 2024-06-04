@@ -5,7 +5,7 @@ using Task10.UI.ViewModels;
 
 namespace Task10.UI.Controllers
 {
-    public class StudentsController(IStudentsService studentsService) : Controller
+    public sealed class StudentsController(IStudentsService studentsService) : Controller
     {
         private readonly IStudentsService _studentsService = studentsService;
 
@@ -34,9 +34,16 @@ namespace Task10.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel)
         {
-            await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId);
+            if (ModelState.IsValid)
+            {
+                await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+
+            studentViewModel.Groups = await _studentsService.GetGroupsAsync();
+
+            return View(studentViewModel);
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -54,11 +61,19 @@ namespace Task10.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string name, string lastName, int groupId)
+        public async Task<IActionResult> Create(CreateStudentViewModel viewModel)
         {
-            await _studentsService.CreateStudentAsync(name, lastName, groupId);
+            if (ModelState.IsValid)
+            {
+                await _studentsService.CreateStudentAsync(viewModel.Name, viewModel.LastName, viewModel.GroupId);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+
+            viewModel.Groups = await _studentsService.GetGroupsAsync();
+
+            return View(viewModel);
+
         }
     }
 }

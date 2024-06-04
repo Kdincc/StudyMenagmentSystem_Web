@@ -6,18 +6,24 @@
     <h1 class="header-class">Create Group</h1>
     @using (Html.BeginForm("Create", "Students", FormMethod.Post))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="d-flex flex-column">
             <div class="form-group">
                 <label class="form-label">Name:</label>
-                <input class="form-input" type="text" name="name" />
+                @Html.EditorFor(m => m.Name, "", new { htmlAttributes = new { @class = "form-input" } })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <label class="form-label">Last name:</label>
-                <input class="form-input" type="text" name="lastname" />
+                @Html.EditorFor(m => m.LastName, "", new { htmlAttributes = new { @class = "form-input" } })
+                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <label class="form-label">Group:</label>
-                @Html.DropDownList("groupId", new SelectList(Model.Groups, "Id", "Name"), new { @class = "edit-group-select" })
+                @Html.DropDownListFor(
+                         model => model.GroupId,
+                         new SelectList(Model.Groups, "Id", "Name"),
+                         new { @class = "edit-group-select" })
             </div>
         </div>
         <div>

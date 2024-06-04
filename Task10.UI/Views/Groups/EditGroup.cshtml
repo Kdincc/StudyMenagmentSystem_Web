@@ -7,10 +7,12 @@
     
     @using (Html.BeginForm("EditGroup", "Groups", FormMethod.Post))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="d-flex flex-column">
             <div class="form-group">
                 <label class="form-label">Name:</label>
                 @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-input", Value = Model.Name } })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <label class="form-label">Course:</label>
@@ -19,8 +21,6 @@
                     new SelectList(Model.Courses, "Id", "Name"), 
                     new { @class = "edit-group-select" })
             </div>
-
-            
         </div>
 
         <div>

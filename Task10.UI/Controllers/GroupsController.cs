@@ -38,11 +38,18 @@ namespace Task10.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(string name, int courseId)
+        public async Task<IActionResult> CreateGroup(CreateGroupViewModel groupViewModel)
         {
-            await _groupsService.CreateGroupAsync(name, courseId);
+            if (ModelState.IsValid)
+            {
+                await _groupsService.CreateGroupAsync(groupViewModel.Name, groupViewModel.CourseId);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+
+            groupViewModel.Courses = await _groupsService.GetCoursesAsync();
+
+            return View(groupViewModel);
         }
 
 
@@ -68,6 +75,8 @@ namespace Task10.UI.Controllers
 
                 return RedirectToAction("Index");
             }
+
+            viewModel.Courses = await _groupsService.GetCoursesAsync();
 
             return View(viewModel);
         }

@@ -7,10 +7,17 @@
     
     @using (Html.BeginForm("Edit", "Students", FormMethod.Post))
     {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="d-flex flex-column">
             <div class="form-group">
                 <label class="form-label">Name:</label>
                 @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-input", Value = Model.Name } })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label class="form-label">Last name:</label>
+                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-input", Value = Model.LastName } })
+                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <label class="form-label">Group:</label>
