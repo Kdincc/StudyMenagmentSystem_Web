@@ -16,6 +16,6 @@ namespace Task10.UI.ViewModels
         public string LastName { get; set; }
 
         [Required]
-        public int GroupId {  get; set; }
+        public int GroupId { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Task10.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<GroupDto> groups =  await _groupsService.GetGroupsWithCourseNamesAsync();
+            IEnumerable<GroupDto> groups = await _groupsService.GetGroupsWithCourseNamesAsync();
 
             return View(new GroupsListViewModel { Groups = groups });
         }
@@ -57,10 +57,10 @@ namespace Task10.UI.Controllers
         {
             GroupEditDto groupEditDto = await _groupsService.GetEditGroupDto(id);
 
-            return View(new EditGroupViewModel 
-            { 
-                Name = groupEditDto.Group.Name, 
-                Courses = groupEditDto.Courses, 
+            return View(new EditGroupViewModel
+            {
+                Name = groupEditDto.Group.Name,
+                Courses = groupEditDto.Courses,
                 Id = groupEditDto.Group.Id,
                 CourseId = groupEditDto.Group.CourseId,
             });

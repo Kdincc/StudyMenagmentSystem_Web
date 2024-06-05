@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task10.Core.DTOs;
+﻿using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
 using Task10.Test.Core.Interfaces;
 using Task10.Test.Core.Models;
@@ -26,7 +21,7 @@ namespace Task10.Core.Services
         {
             Group group = await _groupsRepository.GetGroupWithStudents(groupId);
 
-            if (group.Students.Count != 0) 
+            if (group.Students.Count != 0)
             {
                 return false;
             }

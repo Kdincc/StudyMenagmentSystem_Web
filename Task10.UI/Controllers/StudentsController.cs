@@ -21,10 +21,10 @@ namespace Task10.UI.Controllers
             StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id);
 
             return View(
-                new EditStudentViewModel 
+                new EditStudentViewModel
                 {
-                    Name = studentEditDto.Student.Name, 
-                    LastName = studentEditDto.Student.LastName, 
+                    Name = studentEditDto.Student.Name,
+                    LastName = studentEditDto.Student.LastName,
                     GroupId = studentEditDto.Student.GroupId,
                     Groups = studentEditDto.Groups,
                     Id = studentEditDto.Student.Id

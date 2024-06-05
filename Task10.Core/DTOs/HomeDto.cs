@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task10.Test.Core.Models;
+﻿using Task10.Test.Core.Models;
 
 namespace Task10.Core.DTOs
 {
-    public sealed class HomeDto : IEquatable<HomeDto>  
+    public sealed class HomeDto : IEquatable<HomeDto>
     {
         public IEnumerable<Course> Courses { get; set; }
 
@@ -17,7 +12,7 @@ namespace Task10.Core.DTOs
 
         public bool Equals(HomeDto other)
         {
-            return Courses.SequenceEqual(other.Courses) && Groups.SequenceEqual(other.Groups) && Students.SequenceEqual(Students); 
+            return Courses.SequenceEqual(other.Courses) && Groups.SequenceEqual(other.Groups) && Students.SequenceEqual(Students);
         }
     }
 }

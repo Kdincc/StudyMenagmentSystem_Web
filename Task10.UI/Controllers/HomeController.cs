@@ -15,11 +15,11 @@ namespace Task10.UI.Controllers
         {
             HomeDto homeDto = await _homeService.GetHomeDtoAsync();
 
-            return View(new HomeViewModel 
-            { 
-                Courses = homeDto.Courses, 
-                Groups = homeDto.Groups, 
-                Students = homeDto.Students 
+            return View(new HomeViewModel
+            {
+                Courses = homeDto.Courses,
+                Groups = homeDto.Groups,
+                Students = homeDto.Students
             });
         }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task10.Core.DTOs;
+﻿using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
 using Task10.Test.Core.Interfaces;
 using Task10.Test.Core.Models;
@@ -41,8 +36,8 @@ namespace Task10.Core.Services
         public async Task<StudentEditDto> GetEditStudentDtoAsync(int id)
         {
             Student student = await _studentsRepository.GetByIdAsync(id);
-            var studentDto = new StudentDto 
-            { 
+            var studentDto = new StudentDto
+            {
                 Id = student.Id,
                 Name = student.Name,
                 LastName = student.LastName,
@@ -65,16 +60,16 @@ namespace Task10.Core.Services
 
         public async Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync()
         {
-            IEnumerable<Student> students =  await _studentsRepository.GetStudentWithGroupsAsync();
+            IEnumerable<Student> students = await _studentsRepository.GetStudentWithGroupsAsync();
 
             IEnumerable<StudentDto> studentDtos = students.Select(
-                students => new StudentDto 
-                {  
-                    Name = students.Name, 
+                students => new StudentDto
+                {
+                    Name = students.Name,
                     LastName = students.LastName,
-                    Id = students.Id, 
+                    Id = students.Id,
                     GroupName = students.Group.Name,
-                    GroupId = students.GroupId 
+                    GroupId = students.GroupId
                 });
 
             return studentDtos;

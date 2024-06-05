@@ -28,10 +28,10 @@ namespace Task10.Tests
         public async Task GetHomeDto_IsCorrectDataReturns()
         {
             //Arrange
-            IEnumerable<Course> courses = [new Course() { Name = "TestName", Id = 1 }, new Course() { Name = "TestName1", Id = 2 } ];
+            IEnumerable<Course> courses = [new Course() { Name = "TestName", Id = 1 }, new Course() { Name = "TestName1", Id = 2 }];
             IEnumerable<Group> groups = [new Group { Name = "TestName", Id = 1 }, new Group() { Name = "TestName1", Id = 2 }];
             IEnumerable<Student> students = [new Student() { Name = "TestName", Id = 1 }, new Student() { Name = "TestName1", Id = 2 }];
-            HomeDto expected = new() { Courses = courses, Groups = groups, Students = students  };
+            HomeDto expected = new() { Courses = courses, Groups = groups, Students = students };
 
             //Setup
             _coursesRepositoryMoq.Setup(m => m.GetAllAsync()).ReturnsAsync(courses);

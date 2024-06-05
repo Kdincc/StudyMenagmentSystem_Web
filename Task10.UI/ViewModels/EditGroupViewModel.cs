@@ -8,7 +8,7 @@ namespace Task10.UI.ViewModels
         public IEnumerable<CourseDto> Courses { get; set; }
 
         [Required(ErrorMessage = "Group name is required")]
-        [StringLength(30, ErrorMessage ="Group name cannot be longer than 30")]
+        [StringLength(30, ErrorMessage = "Group name cannot be longer than 30")]
         public string Name { get; set; }
 
         [Required]
