@@ -11,7 +11,7 @@ namespace Task10.Core.Services
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
         private readonly IStudentsRepository _studentsRepository = studentsRepository;
 
-        public async Task<HomeDto> GetHomeDtoAsync()
+        public async Task<HomeDto> GetHomeDtoAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Group> groups = await _groupsRepository.GetAllAsync();
             IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();

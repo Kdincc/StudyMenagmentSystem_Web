@@ -4,9 +4,9 @@ namespace Task10.Core.Interfaces
 {
     public interface IStudentsService
     {
-        public Task<StudentEditDto> GetEditStudentDtoAsync(int id);
+        public Task<StudentEditDto> GetEditStudentDtoAsync(int id, CancellationToken cancellationToken);
 
-        public Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync();
+        public Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync(CancellationToken cancellationToken);
 
         public Task CreateStudentAsync(string studentName, string lastName, int groupId);
 
@@ -14,6 +14,6 @@ namespace Task10.Core.Interfaces
 
         public Task EditStudentAsync(string name, string lastName, int studentId, int groupId);
 
-        public Task<IEnumerable<GroupDto>> GetGroupsAsync();
+        public Task<IEnumerable<GroupDto>> GetGroupsAsync(CancellationToken cancellationToken);
     }
 }

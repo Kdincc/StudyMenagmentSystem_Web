@@ -33,8 +33,13 @@ namespace Task10.Core.Services
             await _studentsRepository.UpdateAsync(studentId);
         }
 
-        public async Task<StudentEditDto> GetEditStudentDtoAsync(int id)
+        public async Task<StudentEditDto> GetEditStudentDtoAsync(int id, CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                //????
+            }
+
             Student student = await _studentsRepository.GetByIdAsync(id);
             var studentDto = new StudentDto
             {
@@ -44,12 +49,12 @@ namespace Task10.Core.Services
                 GroupId = student.GroupId,
             };
 
-            IEnumerable<GroupDto> groups = await GetGroupsAsync();
+            IEnumerable<GroupDto> groups = await GetGroupsAsync(cancellationToken);
 
             return new StudentEditDto { Student = studentDto, Groups = groups };
         }
 
-        public async Task<IEnumerable<GroupDto>> GetGroupsAsync()
+        public async Task<IEnumerable<GroupDto>> GetGroupsAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Group> groups = await _groupsRepository.GetAllAsync();
 
@@ -58,7 +63,7 @@ namespace Task10.Core.Services
             return groupDtos;
         }
 
-        public async Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync()
+        public async Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Student> students = await _studentsRepository.GetStudentWithGroupsAsync();
 

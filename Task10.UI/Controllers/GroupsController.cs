@@ -9,9 +9,9 @@ namespace Task10.UI.Controllers
     {
         private readonly IGroupsService _groupsService = groupsService;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            IEnumerable<GroupDto> groups = await _groupsService.GetGroupsWithCourseNamesAsync();
+            IEnumerable<GroupDto> groups = await _groupsService.GetGroupsWithCourseNamesAsync(cancellationToken);
 
             return View(new GroupsListViewModel { Groups = groups });
         }
@@ -30,15 +30,15 @@ namespace Task10.UI.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> CreateGroup()
+        public async Task<IActionResult> CreateGroup(CancellationToken cancellationToken)
         {
-            IEnumerable<CourseDto> courses = await _groupsService.GetCoursesAsync();
+            IEnumerable<CourseDto> courses = await _groupsService.GetCoursesAsync(cancellationToken);
 
             return View(new CreateGroupViewModel { Courses = courses });
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(CreateGroupViewModel groupViewModel)
+        public async Task<IActionResult> CreateGroup(CreateGroupViewModel groupViewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -47,15 +47,15 @@ namespace Task10.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            groupViewModel.Courses = await _groupsService.GetCoursesAsync();
+            groupViewModel.Courses = await _groupsService.GetCoursesAsync(cancellationToken);
 
             return View(groupViewModel);
         }
 
 
-        public async Task<IActionResult> EditGroup(int id)
+        public async Task<IActionResult> EditGroup(int id, CancellationToken cancellationToken)
         {
-            GroupEditDto groupEditDto = await _groupsService.GetEditGroupDto(id);
+            GroupEditDto groupEditDto = await _groupsService.GetEditGroupDto(id, cancellationToken);
 
             return View(new EditGroupViewModel
             {
@@ -67,7 +67,7 @@ namespace Task10.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditGroup(EditGroupViewModel viewModel)
+        public async Task<IActionResult> EditGroup(EditGroupViewModel viewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +76,7 @@ namespace Task10.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            viewModel.Courses = await _groupsService.GetCoursesAsync();
+            viewModel.Courses = await _groupsService.GetCoursesAsync(cancellationToken);
 
             return View(viewModel);
         }

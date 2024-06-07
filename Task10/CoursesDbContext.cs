@@ -8,6 +8,8 @@ namespace Task10.Infrastructure
         public CoursesDbContext(DbContextOptions<CoursesDbContext> options) : base(options)
         {
             MigrateNotAppliedMigrations();
+
+            SeedData();
         }
 
         public DbSet<Course> Courses { get; set; }
@@ -23,6 +25,30 @@ namespace Task10.Infrastructure
             {
                 Database.Migrate();
             }
+        }
+
+        private void SeedData()
+        {
+            if (Courses.Any()) 
+            {
+                return;
+            }
+
+            Courses.AddRange(
+                new Course 
+                { 
+                    Name = "SQL" 
+                },
+                new Course
+                {
+                    Name = "C#"
+                },
+                new Course
+                {
+                    Name = "Java"
+                });
+
+            SaveChanges();
         }
     }
 }

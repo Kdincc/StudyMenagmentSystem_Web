@@ -41,7 +41,7 @@ namespace Task10.Core.Services
             await _groupsRepository.UpdateAsync(groupId);
         }
 
-        public async Task<IEnumerable<CourseDto>> GetCoursesAsync()
+        public async Task<IEnumerable<CourseDto>> GetCoursesAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();
             IEnumerable<CourseDto> courseDtos = courses.Select(c => new CourseDto { Id = c.Id, Name = c.Name });
@@ -49,7 +49,7 @@ namespace Task10.Core.Services
             return courseDtos;
         }
 
-        public async Task<GroupEditDto> GetEditGroupDto(int id)
+        public async Task<GroupEditDto> GetEditGroupDto(int id, CancellationToken cancellationToken)
         {
             Group group = await _groupsRepository.GetByIdAsync(id);
             var dto = new GroupDto
@@ -60,12 +60,12 @@ namespace Task10.Core.Services
                 Id = group.Id,
             };
 
-            IEnumerable<CourseDto> courseDtos = await GetCoursesAsync();
+            IEnumerable<CourseDto> courseDtos = await GetCoursesAsync(cancellationToken);
 
             return new GroupEditDto { Group = dto, Courses = courseDtos };
         }
 
-        public async Task<IEnumerable<GroupDto>> GetGroupsWithCourseNamesAsync()
+        public async Task<IEnumerable<GroupDto>> GetGroupsWithCourseNamesAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Group> groups = await _groupsRepository.GetGroupsWithCoursesAsync();
 

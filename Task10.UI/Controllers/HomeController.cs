@@ -11,9 +11,9 @@ namespace Task10.UI.Controllers
     {
         private readonly IHomeService _homeService = homeService;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            HomeDto homeDto = await _homeService.GetHomeDtoAsync();
+            HomeDto homeDto = await _homeService.GetHomeDtoAsync(cancellationToken);
 
             return View(new HomeViewModel
             {

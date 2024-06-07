@@ -9,16 +9,16 @@ namespace Task10.UI.Controllers
     {
         private readonly IStudentsService _studentsService = studentsService;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            IEnumerable<StudentDto> students = await _studentsService.GetStudentsWithGroupsNameAsync();
+            IEnumerable<StudentDto> students = await _studentsService.GetStudentsWithGroupsNameAsync(cancellationToken);
 
             return View(new StudentListViewModel { Students = students });
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
         {
-            StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id);
+            StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id, cancellationToken);
 
             return View(
                 new EditStudentViewModel
@@ -32,7 +32,7 @@ namespace Task10.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel)
+        public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace Task10.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            studentViewModel.Groups = await _studentsService.GetGroupsAsync();
+            studentViewModel.Groups = await _studentsService.GetGroupsAsync(cancellationToken);
 
             return View(studentViewModel);
         }
@@ -53,15 +53,15 @@ namespace Task10.UI.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
-            IEnumerable<GroupDto> groups = await _studentsService.GetGroupsAsync();
+            IEnumerable<GroupDto> groups = await _studentsService.GetGroupsAsync(cancellationToken);
 
             return View(new CreateStudentViewModel { Groups = groups });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateStudentViewModel viewModel)
+        public async Task<IActionResult> Create(CreateStudentViewModel viewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace Task10.UI.Controllers
                 return RedirectToAction("Index");
             }
 
-            viewModel.Groups = await _studentsService.GetGroupsAsync();
+            viewModel.Groups = await _studentsService.GetGroupsAsync(cancellationToken);
 
             return View(viewModel);
 

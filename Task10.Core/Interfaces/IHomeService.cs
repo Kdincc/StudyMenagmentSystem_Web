@@ -4,6 +4,6 @@ namespace Task10.Core.Interfaces
 {
     public interface IHomeService
     {
-        public Task<HomeDto> GetHomeDtoAsync();
+        public Task<HomeDto> GetHomeDtoAsync(CancellationToken cancellationToken);
     }
 }
