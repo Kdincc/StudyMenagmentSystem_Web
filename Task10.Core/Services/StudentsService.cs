@@ -10,37 +10,32 @@ namespace Task10.Core.Services
         private readonly IStudentsRepository _studentsRepository = studentsRepository;
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
 
-        public async Task CreateStudentAsync(string studentName, string lastName, int groupId)
+        public async Task CreateStudentAsync(string studentName, string lastName, int groupId, CancellationToken cancellationToken)
         {
             var student = new Student { Name = studentName, LastName = lastName, GroupId = groupId };
 
-            await _studentsRepository.AddAsync(student);
+            await _studentsRepository.AddAsync(student, cancellationToken);
         }
 
-        public async Task DeleteStudentAsync(int studentId)
+        public async Task DeleteStudentAsync(int studentId, CancellationToken cancellationToken)
         {
-            await _studentsRepository.DeleteAsync(studentId);
+            await _studentsRepository.DeleteAsync(studentId, cancellationToken);
         }
 
-        public async Task EditStudentAsync(string name, string lastName, int studentId, int groupId)
+        public async Task EditStudentAsync(string name, string lastName, int studentId, int groupId, CancellationToken cancellationToken)
         {
-            Student student = await _studentsRepository.GetByIdAsync(studentId);
+            Student student = await _studentsRepository.GetByIdAsync(studentId, cancellationToken);
 
             student.Name = name;
             student.LastName = lastName;
             student.GroupId = groupId;
 
-            await _studentsRepository.UpdateAsync(studentId);
+            await _studentsRepository.UpdateAsync(studentId, cancellationToken);
         }
 
         public async Task<StudentEditDto> GetEditStudentDtoAsync(int id, CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                //????
-            }
-
-            Student student = await _studentsRepository.GetByIdAsync(id);
+            Student student = await _studentsRepository.GetByIdAsync(id, cancellationToken);
             var studentDto = new StudentDto
             {
                 Id = student.Id,
@@ -56,7 +51,7 @@ namespace Task10.Core.Services
 
         public async Task<IEnumerable<GroupDto>> GetGroupsAsync(CancellationToken cancellationToken)
         {
-            IEnumerable<Group> groups = await _groupsRepository.GetAllAsync();
+            IEnumerable<Group> groups = await _groupsRepository.GetAllAsync(cancellationToken);
 
             IEnumerable<GroupDto> groupDtos = groups.Select(group => new GroupDto { Name = group.Name, Id = group.Id });
 
@@ -65,7 +60,7 @@ namespace Task10.Core.Services
 
         public async Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync(CancellationToken cancellationToken)
         {
-            IEnumerable<Student> students = await _studentsRepository.GetStudentWithGroupsAsync();
+            IEnumerable<Student> students = await _studentsRepository.GetStudentWithGroupsAsync(cancellationToken);
 
             IEnumerable<StudentDto> studentDtos = students.Select(
                 students => new StudentDto

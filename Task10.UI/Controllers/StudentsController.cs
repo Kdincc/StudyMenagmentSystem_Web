@@ -36,7 +36,7 @@ namespace Task10.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId);
+                await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId, cancellationToken);
 
                 return RedirectToAction("Index");
             }
@@ -46,9 +46,9 @@ namespace Task10.UI.Controllers
             return View(studentViewModel);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            await _studentsService.DeleteStudentAsync(id);
+            await _studentsService.DeleteStudentAsync(id, cancellationToken);
 
             return RedirectToAction("Index");
         }
@@ -65,7 +65,7 @@ namespace Task10.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _studentsService.CreateStudentAsync(viewModel.Name, viewModel.LastName, viewModel.GroupId);
+                await _studentsService.CreateStudentAsync(viewModel.Name, viewModel.LastName, viewModel.GroupId, cancellationToken);
 
                 return RedirectToAction("Index");
             }

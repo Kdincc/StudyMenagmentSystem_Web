@@ -8,44 +8,44 @@ namespace Task10.Infrastructure.Repos
     {
         private readonly CoursesDbContext _dbContext = dbContext;
 
-        public async Task AddAsync(Student entity)
+        public async Task AddAsync(Student entity, CancellationToken cancellationToken)
         {
-            await _dbContext.Students.AddAsync(entity);
+            await _dbContext.Students.AddAsync(entity, cancellationToken);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            Student student = await _dbContext.Students.FindAsync(id);
+            Student student = await _dbContext.Students.FindAsync(id, cancellationToken);
 
             _dbContext.Students.Remove(student);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Student> GetByIdAsync(int id)
+        public async Task<Student> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Students.FindAsync(id);
+            return await _dbContext.Students.FindAsync(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync()
+        public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Students.ToListAsync();
+            return await _dbContext.Students.ToListAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(int id)
+        public async Task UpdateAsync(int id, CancellationToken cancellationToken)
         {
-            Student student = await _dbContext.Students.FindAsync(id);
+            Student student = await _dbContext.Students.FindAsync(id, cancellationToken);
 
             _dbContext.Students.Update(student);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> GetStudentWithGroupsAsync()
+        public async Task<IEnumerable<Student>> GetStudentWithGroupsAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Students.Include(s => s.Group).ToListAsync();
+            return await _dbContext.Students.Include(s => s.Group).ToListAsync(cancellationToken);
         }
     }
 }

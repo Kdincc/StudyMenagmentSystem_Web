@@ -8,39 +8,39 @@ namespace Task10.Infrastructure.Repos
     {
         private readonly CoursesDbContext _dbContext = dbContext;
 
-        public async Task AddAsync(Course entity)
+        public async Task AddAsync(Course entity, CancellationToken cancellationToken)
         {
-            await _dbContext.Courses.AddAsync(entity);
+            await _dbContext.Courses.AddAsync(entity, cancellationToken);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            Course course = await _dbContext.Courses.FindAsync(id);
+            Course course = await _dbContext.Courses.FindAsync(id, cancellationToken);
 
             _dbContext.Courses.Remove(course);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Course>> GetAllAsync()
+        public async Task<IEnumerable<Course>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Courses.ToListAsync();
+            return await _dbContext.Courses.ToListAsync(cancellationToken);
         }
 
-        public async Task<Course> GetByIdAsync(int id)
+        public async Task<Course> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Courses.FindAsync(id);
+            return await _dbContext.Courses.FindAsync(id, cancellationToken);
         }
 
-        public async Task UpdateAsync(int id)
+        public async Task UpdateAsync(int id, CancellationToken cancellationToken)
         {
-            Course course = await _dbContext.Courses.FindAsync(id);
+            Course course = await _dbContext.Courses.FindAsync(id, cancellationToken);
 
             _dbContext.Courses.Update(course);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -8,49 +8,49 @@ namespace Task10.Infrastructure.Repos
     {
         private readonly CoursesDbContext _coursesDbContext = dbContext;
 
-        public async Task AddAsync(Group entity)
+        public async Task AddAsync(Group entity, CancellationToken cancellationToken)
         {
-            await _coursesDbContext.Groups.AddAsync(entity);
+            await _coursesDbContext.Groups.AddAsync(entity, cancellationToken);
 
-            await _coursesDbContext.SaveChangesAsync();
+            await _coursesDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            Group group = await _coursesDbContext.Groups.FindAsync(id);
+            Group group = await _coursesDbContext.Groups.FindAsync(id, cancellationToken);
 
             _coursesDbContext.Groups.Remove(group);
 
-            await _coursesDbContext.SaveChangesAsync();
+            await _coursesDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Group> GetByIdAsync(int id)
+        public async Task<Group> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _coursesDbContext.Groups.FindAsync(id);
+            return await _coursesDbContext.Groups.FindAsync(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<Group>> GetAllAsync()
+        public async Task<IEnumerable<Group>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _coursesDbContext.Groups.ToListAsync();
+            return await _coursesDbContext.Groups.ToListAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(int id)
+        public async Task UpdateAsync(int id, CancellationToken cancellationToken)
         {
-            Group group = await _coursesDbContext.Groups.FindAsync(id);
+            Group group = await _coursesDbContext.Groups.FindAsync(id, cancellationToken);
 
             _coursesDbContext.Groups.Update(group);
 
-            await _coursesDbContext.SaveChangesAsync();
+            await _coursesDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsWithCoursesAsync()
+        public async Task<IEnumerable<Group>> GetGroupsWithCoursesAsync(CancellationToken cancellationToken)
         {
-            return await _coursesDbContext.Groups.Include(g => g.Course).ToListAsync();
+            return await _coursesDbContext.Groups.Include(g => g.Course).ToListAsync(cancellationToken);
         }
 
-        public async Task<Group> GetGroupWithStudents(int id)
+        public async Task<Group> GetGroupWithStudents(int id, CancellationToken cancellationToken)
         {
-            Group group = await _coursesDbContext.Groups.Include(g => g.Students).FirstOrDefaultAsync(g => g.Id == id);
+            Group group = await _coursesDbContext.Groups.Include(g => g.Students).FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
 
             return group;
         }

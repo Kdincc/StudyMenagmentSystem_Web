@@ -8,11 +8,11 @@ namespace Task10.Core.Interfaces
 
         public Task<IEnumerable<StudentDto>> GetStudentsWithGroupsNameAsync(CancellationToken cancellationToken);
 
-        public Task CreateStudentAsync(string studentName, string lastName, int groupId);
+        public Task CreateStudentAsync(string studentName, string lastName, int groupId, CancellationToken cancellationToken);
 
-        public Task DeleteStudentAsync(int studentId);
+        public Task DeleteStudentAsync(int studentId, CancellationToken cancellationToken);
 
-        public Task EditStudentAsync(string name, string lastName, int studentId, int groupId);
+        public Task EditStudentAsync(string name, string lastName, int studentId, int groupId, CancellationToken cancellationToken);
 
         public Task<IEnumerable<GroupDto>> GetGroupsAsync(CancellationToken cancellationToken);
     }

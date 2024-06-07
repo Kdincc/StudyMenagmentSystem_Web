@@ -10,48 +10,48 @@ namespace Task10.Core.Services
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
         private readonly ICoursesRepository _coursesRepository = coursesRepository;
 
-        public async Task CreateGroupAsync(string groupName, int courseId)
+        public async Task CreateGroupAsync(string groupName, int courseId, CancellationToken cancellationToken)
         {
             var group = new Group { Name = groupName, CourseId = courseId };
 
-            await _groupsRepository.AddAsync(group);
+            await _groupsRepository.AddAsync(group, cancellationToken);
         }
 
-        public async Task<bool> DeleteGroupAsync(int groupId)
+        public async Task<bool> DeleteGroupAsync(int groupId, CancellationToken cancellationToken)
         {
-            Group group = await _groupsRepository.GetGroupWithStudents(groupId);
+            Group group = await _groupsRepository.GetGroupWithStudents(groupId, cancellationToken);
 
             if (group.Students.Count != 0)
             {
                 return false;
             }
 
-            await _groupsRepository.DeleteAsync(groupId);
+            await _groupsRepository.DeleteAsync(groupId, cancellationToken);
 
             return true;
         }
 
-        public async Task EditGroupAsync(string name, int groupId, int courseId)
+        public async Task EditGroupAsync(string name, int groupId, int courseId, CancellationToken cancellationToken)
         {
-            Group group = await _groupsRepository.GetByIdAsync(groupId);
+            Group group = await _groupsRepository.GetByIdAsync(groupId, cancellationToken);
 
             group.Name = name;
             group.CourseId = courseId;
 
-            await _groupsRepository.UpdateAsync(groupId);
+            await _groupsRepository.UpdateAsync(groupId, cancellationToken);
         }
 
         public async Task<IEnumerable<CourseDto>> GetCoursesAsync(CancellationToken cancellationToken)
         {
-            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();
+            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync(cancellationToken);
             IEnumerable<CourseDto> courseDtos = courses.Select(c => new CourseDto { Id = c.Id, Name = c.Name });
 
             return courseDtos;
         }
 
-        public async Task<GroupEditDto> GetEditGroupDto(int id, CancellationToken cancellationToken)
+        public async Task<GroupEditDto> GetEditGroupDtoAsync(int id, CancellationToken cancellationToken)
         {
-            Group group = await _groupsRepository.GetByIdAsync(id);
+            Group group = await _groupsRepository.GetByIdAsync(id, cancellationToken);
             var dto = new GroupDto
             {
                 Name =
@@ -67,7 +67,7 @@ namespace Task10.Core.Services
 
         public async Task<IEnumerable<GroupDto>> GetGroupsWithCourseNamesAsync(CancellationToken cancellationToken)
         {
-            IEnumerable<Group> groups = await _groupsRepository.GetGroupsWithCoursesAsync();
+            IEnumerable<Group> groups = await _groupsRepository.GetGroupsWithCoursesAsync(cancellationToken);
 
             return groups.Select(group => new GroupDto
             {

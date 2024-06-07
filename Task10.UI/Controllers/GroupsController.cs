@@ -16,9 +16,9 @@ namespace Task10.UI.Controllers
             return View(new GroupsListViewModel { Groups = groups });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            bool isDeleted = await _groupsService.DeleteGroupAsync(id);
+            bool isDeleted = await _groupsService.DeleteGroupAsync(id, cancellationToken);
 
             if (isDeleted)
             {
@@ -42,7 +42,7 @@ namespace Task10.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _groupsService.CreateGroupAsync(groupViewModel.Name, groupViewModel.CourseId);
+                await _groupsService.CreateGroupAsync(groupViewModel.Name, groupViewModel.CourseId, cancellationToken);
 
                 return RedirectToAction("Index");
             }
@@ -55,7 +55,7 @@ namespace Task10.UI.Controllers
 
         public async Task<IActionResult> EditGroup(int id, CancellationToken cancellationToken)
         {
-            GroupEditDto groupEditDto = await _groupsService.GetEditGroupDto(id, cancellationToken);
+            GroupEditDto groupEditDto = await _groupsService.GetEditGroupDtoAsync(id, cancellationToken);
 
             return View(new EditGroupViewModel
             {
@@ -71,7 +71,7 @@ namespace Task10.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _groupsService.EditGroupAsync(viewModel.Name, viewModel.Id, viewModel.CourseId);
+                await _groupsService.EditGroupAsync(viewModel.Name, viewModel.Id, viewModel.CourseId, cancellationToken);
 
                 return RedirectToAction("Index");
             }

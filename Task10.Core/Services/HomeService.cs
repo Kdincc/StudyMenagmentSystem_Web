@@ -13,9 +13,9 @@ namespace Task10.Core.Services
 
         public async Task<HomeDto> GetHomeDtoAsync(CancellationToken cancellationToken)
         {
-            IEnumerable<Group> groups = await _groupsRepository.GetAllAsync();
-            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync();
-            IEnumerable<Student> students = await _studentsRepository.GetAllAsync();
+            IEnumerable<Group> groups = await _groupsRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Student> students = await _studentsRepository.GetAllAsync(cancellationToken);
 
             return new HomeDto { Courses = courses, Students = students, Groups = groups };
         }
