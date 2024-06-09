@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.OpenApi.Models;
 using Task10.Core;
 using Task10.Infrastructure;
 
@@ -9,11 +11,25 @@ namespace Task10.UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //builder.Services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task10 API", Version = "v1" });
+            //});
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddInfrastructure(builder.Configuration).AddCore();
 
             var app = builder.Build();
+
+            //if (app.Environment.IsDevelopment()) 
+            //{
+            //    app.UseSwaggerUI(c =>
+            //    {
+            //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            //        c.RoutePrefix = string.Empty; // Это сделает Swagger UI доступным на корне URL (http://localhost:<port>/)
+            //    });
+            //}
 
             if (!app.Environment.IsDevelopment())
             {
@@ -28,19 +44,24 @@ namespace Task10.UI
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Groups}/{action=Index}/{id?}"
-                );
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Students}/{action=Index}/{id?}"
-                );
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "{controller=Groups}/{action=Index}/{id?}"
+            //    );
+
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "{controller=Students}/{action=Index}/{id?}"
+            //    );
 
             app.Run();
         }

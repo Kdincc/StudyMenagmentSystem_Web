@@ -5,10 +5,13 @@ using Task10.UI.ViewModels;
 
 namespace Task10.UI.Controllers
 {
+    [Route("students")]
     public sealed class StudentsController(IStudentsService studentsService) : Controller
     {
         private readonly IStudentsService _studentsService = studentsService;
 
+        [HttpGet("")]
+        [HttpGet("index")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             IEnumerable<StudentDto> students = await _studentsService.GetStudentsWithGroupsNameAsync(cancellationToken);
@@ -16,6 +19,7 @@ namespace Task10.UI.Controllers
             return View(new StudentListViewModel { Students = students });
         }
 
+        [HttpGet("edit/{id}")]
         public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
         {
             StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id, cancellationToken);
@@ -31,7 +35,7 @@ namespace Task10.UI.Controllers
                 });
         }
 
-        [HttpPost]
+        [HttpPost("edit")]
         public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
@@ -46,6 +50,7 @@ namespace Task10.UI.Controllers
             return View(studentViewModel);
         }
 
+        [HttpPost("delete/{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             await _studentsService.DeleteStudentAsync(id, cancellationToken);
@@ -53,6 +58,7 @@ namespace Task10.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("create")]
         public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
             IEnumerable<GroupDto> groups = await _studentsService.GetGroupsAsync(cancellationToken);
@@ -60,7 +66,7 @@ namespace Task10.UI.Controllers
             return View(new CreateStudentViewModel { Groups = groups });
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(CreateStudentViewModel viewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
