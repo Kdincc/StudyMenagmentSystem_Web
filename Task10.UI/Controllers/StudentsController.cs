@@ -22,64 +22,113 @@ namespace Task10.UI.Controllers
         [HttpGet("edit/{id}")]
         public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
         {
-            StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id, cancellationToken);
+            try
+            {
+                StudentEditDto studentEditDto = await _studentsService.GetEditStudentDtoAsync(id, cancellationToken);
 
-            return View(
-                new EditStudentViewModel
-                {
-                    Name = studentEditDto.Student.Name,
-                    LastName = studentEditDto.Student.LastName,
-                    GroupId = studentEditDto.Student.GroupId,
-                    Groups = studentEditDto.Groups,
-                    Id = studentEditDto.Student.Id
-                });
+                return View(
+                    new EditStudentViewModel
+                    {
+                        Name = studentEditDto.Student.Name,
+                        LastName = studentEditDto.Student.LastName,
+                        GroupId = studentEditDto.Student.GroupId,
+                        Groups = studentEditDto.Groups,
+                        Id = studentEditDto.Student.Id
+                    });
+            }
+            catch(OperationCanceledException) 
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost("edit/{id}")]
         public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId, cancellationToken);
+                if (ModelState.IsValid)
+                {
+                    await _studentsService.EditStudentAsync(studentViewModel.Name, studentViewModel.LastName, studentViewModel.Id, studentViewModel.GroupId, cancellationToken);
 
+                    return RedirectToAction("Index");
+                }
+
+                studentViewModel.Groups = await _studentsService.GetGroupsAsync(cancellationToken);
+
+                return View(studentViewModel);
+            }
+            catch (OperationCanceledException)
+            {
                 return RedirectToAction("Index");
             }
+        }
 
-            studentViewModel.Groups = await _studentsService.GetGroupsAsync(cancellationToken);
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                DeleteStudentDto dto = await _studentsService.GetDeleteStudentDto(id, cancellationToken);
 
-            return View(studentViewModel);
+                return View(new DeleteStudentViewModel() { Name = dto.Name, LastName = dto.LastName, Id = dto.Id });
+            }
+            catch (OperationCanceledException)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost("delete/{id}")]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(DeleteStudentViewModel viewModel, CancellationToken cancellationToken)
         {
-            await _studentsService.DeleteStudentAsync(id, cancellationToken);
+            try
+            {
+                await _studentsService.DeleteStudentAsync(viewModel.Id, cancellationToken);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            catch (OperationCanceledException)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpGet("create")]
         public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
-            IEnumerable<GroupDto> groups = await _studentsService.GetGroupsAsync(cancellationToken);
+            try
+            {
+                IEnumerable<GroupDto> groups = await _studentsService.GetGroupsAsync(cancellationToken);
 
-            return View(new CreateStudentViewModel { Groups = groups });
+                return View(new CreateStudentViewModel { Groups = groups });
+            }
+            catch (OperationCanceledException)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost("create")]
         public async Task<IActionResult> Create(CreateStudentViewModel viewModel, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _studentsService.CreateStudentAsync(viewModel.Name, viewModel.LastName, viewModel.GroupId, cancellationToken);
+                if (ModelState.IsValid)
+                {
+                    await _studentsService.CreateStudentAsync(viewModel.Name, viewModel.LastName, viewModel.GroupId, cancellationToken);
 
+                    return RedirectToAction("Index");
+                }
+
+                viewModel.Groups = await _studentsService.GetGroupsAsync(cancellationToken);
+
+                return View(viewModel);
+            }
+            catch (OperationCanceledException)
+            {
                 return RedirectToAction("Index");
             }
-
-            viewModel.Groups = await _studentsService.GetGroupsAsync(cancellationToken);
-
-            return View(viewModel);
-
         }
     }
 }

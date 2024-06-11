@@ -30,10 +30,10 @@ namespace Task10.Tests
             IEnumerable<CourseDto> expected = [new CourseDto() { Name = "TestName", Id = 1 }, new CourseDto() { Name = "TestName1", Id = 2 }];
 
             //Setup
-            _coursesRepositoryMoq.Setup(m => m.GetAllAsync()).ReturnsAsync(courses);
+            _coursesRepositoryMoq.Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
 
             //Act
-            IEnumerable<CourseDto> actual = await _groupsService.GetCoursesAsync();
+            IEnumerable<CourseDto> actual = await _groupsService.GetCoursesAsync(It.IsAny<CancellationToken>());
 
             //Assert
             Assert.IsTrue(expected.SequenceEqual(actual));
@@ -51,11 +51,11 @@ namespace Task10.Tests
             GroupEditDto expected = new() { Courses = dtos, Group = groupDto };
 
             //Setup
-            _coursesRepositoryMoq.Setup(m => m.GetAllAsync()).ReturnsAsync(courses);
-            _groupsRepositoryMoq.Setup(m => m.GetByIdAsync(id)).ReturnsAsync(group);
+            _coursesRepositoryMoq.Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
+            _groupsRepositoryMoq.Setup(m => m.GetByIdAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(group);
 
             //Act
-            GroupEditDto actual = await _groupsService.GetEditGroupDto(id);
+            GroupEditDto actual = await _groupsService.GetEditGroupDtoAsync(id, It.IsAny<CancellationToken>());
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -73,10 +73,10 @@ namespace Task10.Tests
             IEnumerable<GroupDto> expected = groups.Select(g => new GroupDto { Id = g.Id, CourseId = g.CourseId, Name = g.Name, CourseName = g.Course.Name });
 
             //Setup
-            _groupsRepositoryMoq.Setup(m => m.GetGroupsWithCoursesAsync()).ReturnsAsync(groups);
+            _groupsRepositoryMoq.Setup(m => m.GetGroupsWithCoursesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(groups);
 
             //Act
-            IEnumerable<GroupDto> actual = await _groupsService.GetGroupsWithCourseNamesAsync();
+            IEnumerable<GroupDto> actual = await _groupsService.GetGroupsWithCourseNamesAsync(It.IsAny<CancellationToken>());
 
             //Assert
             Assert.IsTrue(expected.SequenceEqual(actual));
@@ -92,13 +92,13 @@ namespace Task10.Tests
             Group groupToEdit = new() { Name = "old name", CourseId = 1, Id = 1 };
 
             //Setup
-            _groupsRepositoryMoq.Setup(m => m.GetByIdAsync(id)).ReturnsAsync(groupToEdit);
+            _groupsRepositoryMoq.Setup(m => m.GetByIdAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(groupToEdit);
 
             //Act
-            await _groupsService.EditGroupAsync(name, id, courseId);
+            await _groupsService.EditGroupAsync(name, id, courseId, It.IsAny<CancellationToken>());
 
             //Assert
-            _groupsRepositoryMoq.Verify(m => m.UpdateAsync(id), Times.Once);
+            _groupsRepositoryMoq.Verify(m => m.UpdateAsync(id, It.IsAny<CancellationToken>()), Times.Once);
         }
 
 
@@ -110,13 +110,13 @@ namespace Task10.Tests
             Group groupToDelete = new() { Name = "old name", CourseId = 1, Id = 1 };
 
             //Setup
-            _groupsRepositoryMoq.Setup(m => m.GetGroupWithStudents(id)).ReturnsAsync(groupToDelete);
+            _groupsRepositoryMoq.Setup(m => m.GetGroupWithStudents(id, It.IsAny<CancellationToken>())).ReturnsAsync(groupToDelete);
 
             //Act
-            await _groupsService.DeleteGroupAsync(id);
+            await _groupsService.DeleteGroupAsync(id, It.IsAny<CancellationToken>());
 
             //Assert
-            _groupsRepositoryMoq.Verify(m => m.DeleteAsync(id), Times.Once);
+            _groupsRepositoryMoq.Verify(m => m.DeleteAsync(id, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -127,13 +127,13 @@ namespace Task10.Tests
             Group groupToDelete = new() { Name = "old name", CourseId = 1, Id = 1, Students = [new Student()] };
 
             //Setup
-            _groupsRepositoryMoq.Setup(m => m.GetGroupWithStudents(id)).ReturnsAsync(groupToDelete);
+            _groupsRepositoryMoq.Setup(m => m.GetGroupWithStudents(id, It.IsAny<CancellationToken>())).ReturnsAsync(groupToDelete);
 
             //Act
-            await _groupsService.DeleteGroupAsync(id);
+            await _groupsService.DeleteGroupAsync(id, It.IsAny<CancellationToken>());
 
             //Assert
-            _groupsRepositoryMoq.Verify(m => m.DeleteAsync(id), Times.Never);
+            _groupsRepositoryMoq.Verify(m => m.DeleteAsync(id, It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [TestMethod]
@@ -144,10 +144,10 @@ namespace Task10.Tests
             int courseId = 1;
 
             //Act
-            await _groupsService.CreateGroupAsync(name, courseId);
+            await _groupsService.CreateGroupAsync(name, courseId, It.IsAny<CancellationToken>());
 
             //Assert
-            _groupsRepositoryMoq.Verify(m => m.AddAsync(It.IsAny<Group>()), Times.Once);
+            _groupsRepositoryMoq.Verify(m => m.AddAsync(It.IsAny<Group>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

@@ -15,5 +15,7 @@ namespace Task10.Core.Interfaces
         public Task EditStudentAsync(string name, string lastName, int studentId, int groupId, CancellationToken cancellationToken);
 
         public Task<IEnumerable<GroupDto>> GetGroupsAsync(CancellationToken cancellationToken);
+
+        public Task<DeleteStudentDto> GetDeleteStudentDto(int id, CancellationToken cancellationToken);
     }
 }

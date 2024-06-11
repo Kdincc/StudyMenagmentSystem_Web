@@ -34,12 +34,12 @@ namespace Task10.Tests
             HomeDto expected = new() { Courses = courses, Groups = groups, Students = students };
 
             //Setup
-            _coursesRepositoryMoq.Setup(m => m.GetAllAsync()).ReturnsAsync(courses);
-            _groupsRepositoryMoq.Setup(m => m.GetAllAsync()).ReturnsAsync(groups);
-            _studentsRepositoryMoq.Setup(m => m.GetAllAsync()).ReturnsAsync(students);
+            _coursesRepositoryMoq.Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
+            _groupsRepositoryMoq.Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(groups);
+            _studentsRepositoryMoq.Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(students);
 
             //Act
-            HomeDto actual = await _homeService.GetHomeDtoAsync();
+            HomeDto actual = await _homeService.GetHomeDtoAsync(It.IsAny<CancellationToken>());
 
             //Assert
             Assert.AreEqual(expected, actual);

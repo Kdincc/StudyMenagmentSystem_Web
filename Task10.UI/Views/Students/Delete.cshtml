@@ -1,15 +1,14 @@
 ﻿@using Task10.UI.ViewModels
-@model DeleteGroupViewModel
+@model DeleteStudentViewModel
 
 <div class="main-container">
-    <h1 class="header-class">Are you sure you want to delete @Model.Name group ?</h1>
-    @using (Html.BeginForm("Delete", "Groups", FormMethod.Post))
+    <h1 class="header-class">Are you sure you want to delete @Model.Name @Model.LastName student ?</h1>
+    @using (Html.BeginForm("Delete", "Students", FormMethod.Post))
     {
         <div class="d-flex flex-column">
             <div class="form-group">
                 <button class="form-button" type="submit">Yes</button>
             </div>
         </div>
-        
     }
 </div>

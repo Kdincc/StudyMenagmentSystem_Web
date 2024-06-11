@@ -31,10 +31,10 @@ namespace Task10.Tests
             string lastName = "lastName";
 
             //Act
-            await _studentsService.CreateStudentAsync(name, lastName, groupId);
+            await _studentsService.CreateStudentAsync(name, lastName, groupId, It.IsAny<CancellationToken>());
 
             //Assert
-            _studentRepositoryMock.Verify(m => m.AddAsync(It.IsAny<Student>()), Times.Once);
+            _studentRepositoryMock.Verify(m => m.AddAsync(It.IsAny<Student>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -44,10 +44,10 @@ namespace Task10.Tests
             int studentId = 1;
 
             //Act
-            await _studentsService.DeleteStudentAsync(studentId);
+            await _studentsService.DeleteStudentAsync(studentId, It.IsAny<CancellationToken>());
 
             //Assert
-            _studentRepositoryMock.Verify(m => m.DeleteAsync(studentId), Times.Once);
+            _studentRepositoryMock.Verify(m => m.DeleteAsync(studentId, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -60,13 +60,13 @@ namespace Task10.Tests
             string lastName = "newLastName";
 
             //Setup
-            _studentRepositoryMock.Setup(m => m.GetByIdAsync(studentId)).ReturnsAsync(new Student());
+            _studentRepositoryMock.Setup(m => m.GetByIdAsync(studentId, It.IsAny<CancellationToken>())).ReturnsAsync(new Student());
 
             //Act
-            await _studentsService.EditStudentAsync(name, lastName, studentId, grouoId);
+            await _studentsService.EditStudentAsync(name, lastName, studentId, grouoId, It.IsAny<CancellationToken>());
 
             //Assert
-            _studentRepositoryMock.Verify(m => m.UpdateAsync(studentId), Times.Once);
+            _studentRepositoryMock.Verify(m => m.UpdateAsync(studentId, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -85,11 +85,11 @@ namespace Task10.Tests
             StudentEditDto expected = new() { Groups = groupDtos, Student = studentDto };
 
             //Setup
-            _studentRepositoryMock.Setup(m => m.GetByIdAsync(id)).ReturnsAsync(student);
-            _groupRepositoryMock.Setup(m => m.GetAllAsync()).ReturnsAsync(groups);
+            _studentRepositoryMock.Setup(m => m.GetByIdAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(student);
+            _groupRepositoryMock.Setup(m => m.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(groups);
 
             //Act
-            StudentEditDto actual = await _studentsService.GetEditStudentDtoAsync(id);
+            StudentEditDto actual = await _studentsService.GetEditStudentDtoAsync(id, It.IsAny<CancellationToken>());
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -107,10 +107,10 @@ namespace Task10.Tests
             IEnumerable<StudentDto> expected = students.Select(s => new StudentDto() { Name = s.Name, LastName = s.LastName, Id = s.Id, GroupId = s.Group.Id, GroupName = s.Group.Name });
 
             //Setup
-            _studentRepositoryMock.Setup(m => m.GetStudentWithGroupsAsync()).ReturnsAsync(students);
+            _studentRepositoryMock.Setup(m => m.GetStudentWithGroupsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(students);
 
             //Act
-            IEnumerable<StudentDto> actual = await _studentsService.GetStudentsWithGroupsNameAsync();
+            IEnumerable<StudentDto> actual = await _studentsService.GetStudentsWithGroupsNameAsync(It.IsAny<CancellationToken>());
 
             //Assert
             Assert.IsTrue(expected.SequenceEqual(actual));

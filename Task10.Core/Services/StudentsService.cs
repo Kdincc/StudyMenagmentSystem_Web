@@ -33,6 +33,13 @@ namespace Task10.Core.Services
             await _studentsRepository.UpdateAsync(studentId, cancellationToken);
         }
 
+        public async Task<DeleteStudentDto> GetDeleteStudentDto(int id, CancellationToken cancellationToken)
+        {
+            Student student = await _studentsRepository.GetByIdAsync(id, cancellationToken);
+
+            return new DeleteStudentDto { Name = student.Name, LastName = student.LastName, Id = id };
+        }
+
         public async Task<StudentEditDto> GetEditStudentDtoAsync(int id, CancellationToken cancellationToken)
         {
             Student student = await _studentsRepository.GetByIdAsync(id, cancellationToken);
