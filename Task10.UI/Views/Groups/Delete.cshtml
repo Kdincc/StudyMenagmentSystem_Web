@@ -1,0 +1,15 @@
+﻿@using Task10.UI.ViewModels
+@model DeleteGroupViewModel
+
+<div class="main-container">
+    <h1 class="header-class">Are you sure you want delete this group ?</h1>
+    @using (Html.BeginForm("Delete", "Groups", FormMethod.Post))
+    {
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <button class="form-button" type="submit">Yes</button>
+            </div>
+        </div>
+        
+    }
+</div>

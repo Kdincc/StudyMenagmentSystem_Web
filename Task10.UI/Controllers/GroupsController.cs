@@ -19,12 +19,20 @@ namespace Task10.UI.Controllers
             return View(new GroupsListViewModel { Groups = groups });
         }
 
-        [HttpPost("delete/{id}")]
+        [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        {
+            DeleteGroupDto dto = await _groupsService.GetDeleteGroupDto(id, cancellationToken);
+
+            return View(new DeleteGroupViewModel { Id = dto.Id, Name = dto.Name, IsToDelete = dto.IsToDelete });
+        }
+
+        [HttpPost("delete/{id}")]
+        public async Task<IActionResult> Delete(DeleteGroupViewModel viewModel, CancellationToken cancellationToken)
         {
             try
             {
-                bool isDeleted = await _groupsService.DeleteGroupAsync(id, cancellationToken);
+                bool isDeleted = await _groupsService.DeleteGroupAsync(viewModel.Id, cancellationToken);
 
                 if (isDeleted)
                 {
@@ -75,18 +83,25 @@ namespace Task10.UI.Controllers
         [HttpGet("edit/{id}")]
         public async Task<IActionResult> EditGroup(int id, CancellationToken cancellationToken)
         {
-            GroupEditDto groupEditDto = await _groupsService.GetEditGroupDtoAsync(id, cancellationToken);
-
-            return View(new EditGroupViewModel
+            try
             {
-                Name = groupEditDto.Group.Name,
-                Courses = groupEditDto.Courses,
-                Id = groupEditDto.Group.Id,
-                CourseId = groupEditDto.Group.CourseId,
-            });
+                GroupEditDto groupEditDto = await _groupsService.GetEditGroupDtoAsync(id, cancellationToken);
+
+                return View(new EditGroupViewModel
+                {
+                    Name = groupEditDto.Group.Name,
+                    Courses = groupEditDto.Courses,
+                    Id = groupEditDto.Group.Id,
+                    CourseId = groupEditDto.Group.CourseId,
+                });
+            }
+            catch(OperationCanceledException) 
+            {
+                return RedirectToAction("Index");
+            }
         }
 
-        [HttpPost("edit")]
+        [HttpPost("edit/{id}")]
         public async Task<IActionResult> EditGroup(EditGroupViewModel viewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)

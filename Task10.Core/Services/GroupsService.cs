@@ -49,6 +49,13 @@ namespace Task10.Core.Services
             return courseDtos;
         }
 
+        public async Task<DeleteGroupDto> GetDeleteGroupDto(int id, CancellationToken cancellationToken)
+        {
+            Group group = await _groupsRepository.GetByIdAsync(id, cancellationToken);
+
+            return new DeleteGroupDto() { Id = id, Name = group.Name };
+        }
+
         public async Task<GroupEditDto> GetEditGroupDtoAsync(int id, CancellationToken cancellationToken)
         {
             Group group = await _groupsRepository.GetByIdAsync(id, cancellationToken);

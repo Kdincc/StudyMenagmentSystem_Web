@@ -44,24 +44,7 @@ namespace Task10.UI
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
-            //app.MapControllerRoute(
-            //    name: "default",
-            //    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            //app.MapControllerRoute(
-            //    name: "default",
-            //    pattern: "{controller=Groups}/{action=Index}/{id?}"
-            //    );
-
-            //app.MapControllerRoute(
-            //    name: "default",
-            //    pattern: "{controller=Students}/{action=Index}/{id?}"
-            //    );
+            app.MapControllers();
 
             app.Run();
         }

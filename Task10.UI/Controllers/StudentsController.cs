@@ -35,7 +35,7 @@ namespace Task10.UI.Controllers
                 });
         }
 
-        [HttpPost("edit")]
+        [HttpPost("edit/{id}")]
         public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
