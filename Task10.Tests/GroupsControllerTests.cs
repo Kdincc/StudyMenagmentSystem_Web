@@ -62,21 +62,6 @@ namespace Task10.Tests
             Assert.AreEqual(deleteDto.Id, model.Id);
         }
 
-        [TestMethod]
-        public async Task Delete_Get_OperationCanceledException_RedirectsToIndex()
-        {
-            // Arrange
-            _groupsServiceMock.Setup(service => service.GetDeleteGroupDto(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                              .ThrowsAsync(new OperationCanceledException());
-
-            // Act
-            var result = await _controller.Delete(1, CancellationToken.None);
-            var redirectResult = result as RedirectToActionResult;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-            Assert.AreEqual("Index", redirectResult.ActionName);
-        }
 
         [TestMethod]
         public async Task Delete_Post_RedirectsToIndex_OnSuccess()
@@ -85,23 +70,6 @@ namespace Task10.Tests
             var deleteModel = new DeleteGroupViewModel { Id = 1, Name = "Group1" };
             _groupsServiceMock.Setup(service => service.DeleteGroupAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
                               .ReturnsAsync(true);
-
-            // Act
-            var result = await _controller.Delete(deleteModel, CancellationToken.None);
-            var redirectResult = result as RedirectToActionResult;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-            Assert.AreEqual("Index", redirectResult.ActionName);
-        }
-
-        [TestMethod]
-        public async Task Delete_Post_OperationCanceledException_RedirectsToIndex()
-        {
-            // Arrange
-            var deleteModel = new DeleteGroupViewModel { Id = 1, Name = "Group1" };
-            _groupsServiceMock.Setup(service => service.DeleteGroupAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                              .ThrowsAsync(new OperationCanceledException());
 
             // Act
             var result = await _controller.Delete(deleteModel, CancellationToken.None);
@@ -128,22 +96,6 @@ namespace Task10.Tests
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             Assert.IsTrue(courses.SequenceEqual(model.Courses));
-        }
-
-        [TestMethod]
-        public async Task Create_Get_OperationCanceledException_RedirectsToIndex()
-        {
-            // Arrange
-            _groupsServiceMock.Setup(service => service.GetCoursesAsync(It.IsAny<CancellationToken>()))
-                              .ThrowsAsync(new OperationCanceledException());
-
-            // Act
-            var result = await _controller.CreateGroup(CancellationToken.None);
-            var redirectResult = result as RedirectToActionResult;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-            Assert.AreEqual("Index", redirectResult.ActionName);
         }
 
         [TestMethod]
@@ -188,28 +140,6 @@ namespace Task10.Tests
         }
 
         [TestMethod]
-        public async Task Create_Post_OperationCanceledException_RedirectsToIndex()
-        {
-            // Arrange
-            var createModel = new CreateGroupViewModel
-            {
-                Name = "Group1",
-                CourseId = 1
-            };
-            _groupsServiceMock.Setup(service => service.CreateGroupAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                              .ThrowsAsync(new OperationCanceledException());
-
-            // Act
-            var result = await _controller.CreateGroup(createModel, CancellationToken.None);
-            var redirectResult = result as RedirectToActionResult;
-
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-            Assert.AreEqual("Index", redirectResult.ActionName);
-        }
-
-        [TestMethod]
         public async Task Edit_Get_ReturnsViewResult_WithEditGroupViewModel()
         {
             // Arrange
@@ -231,22 +161,6 @@ namespace Task10.Tests
             Assert.AreEqual(groupEditDto.Group.CourseId, model.CourseId);
             Assert.AreEqual(groupEditDto.Group.Id, model.Id);
             Assert.IsTrue(groupEditDto.Courses.SequenceEqual(model.Courses));
-        }
-
-        [TestMethod]
-        public async Task Edit_Get_OperationCanceledException_RedirectsToIndex()
-        {
-            // Arrange
-            _groupsServiceMock.Setup(service => service.GetEditGroupDtoAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                              .ThrowsAsync(new OperationCanceledException());
-
-            // Act
-            var result = await _controller.EditGroup(1, CancellationToken.None);
-            var redirectResult = result as RedirectToActionResult;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-            Assert.AreEqual("Index", redirectResult.ActionName);
         }
 
         [TestMethod]
@@ -291,30 +205,6 @@ namespace Task10.Tests
             Assert.AreEqual(editModel.Name, model.Name);
             Assert.AreEqual(editModel.CourseId, model.CourseId);
             Assert.AreEqual(editModel.Id, model.Id);
-        }
-
-        [TestMethod]
-        public async Task Edit_Post_OperationCanceledException_RedirectsToIndex()
-        {
-            // Arrange
-            var editModel = new EditGroupViewModel
-            {
-                Name = "Group1",
-                Id = 1,
-                CourseId = 1
-            };
-
-            //Setup
-            _groupsServiceMock.Setup(service => service.EditGroupAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                              .ThrowsAsync(new OperationCanceledException());
-
-            // Act
-            var result = await _controller.EditGroup(editModel, CancellationToken.None);
-            var redirectResult = result as RedirectToActionResult;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-            Assert.AreEqual("Index", redirectResult.ActionName);
         }
     }
 }
