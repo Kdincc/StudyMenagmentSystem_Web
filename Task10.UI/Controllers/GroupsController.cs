@@ -22,35 +22,20 @@ namespace Task10.UI.Controllers
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            try
-            {
-                DeleteGroupDto dto = await _groupsService.GetDeleteGroupDto(id, cancellationToken);
+            DeleteGroupDto dto = await _groupsService.GetDeleteGroupDto(id, cancellationToken);
 
-                return View(new DeleteGroupViewModel { Id = dto.Id, Name = dto.Name });
-            }
-            catch(OperationCanceledException) 
-            { 
-                return RedirectToAction("Index");
-            }
+            return View(new DeleteGroupViewModel { Id = dto.Id, Name = dto.Name });
         }
 
         [HttpPost("delete/{id}")]
         public async Task<IActionResult> Delete(DeleteGroupViewModel viewModel, CancellationToken cancellationToken)
         {
-            try
-            {
-                bool isDeleted = await _groupsService.DeleteGroupAsync(viewModel.Id, cancellationToken);
+            bool isDeleted = await _groupsService.DeleteGroupAsync(viewModel.Id, cancellationToken);
 
-                if (isDeleted)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (OperationCanceledException)
+            if (isDeleted)
             {
                 return RedirectToAction("Index");
             }
-
 
             TempData["ErrorMessage"] = "Can`t delete non empty groups!";
 
@@ -60,81 +45,53 @@ namespace Task10.UI.Controllers
         [HttpGet("create")]
         public async Task<IActionResult> CreateGroup(CancellationToken cancellationToken)
         {
-            try 
-            {
-                IEnumerable<CourseDto> courses = await _groupsService.GetCoursesAsync(cancellationToken);
+            IEnumerable<CourseDto> courses = await _groupsService.GetCoursesAsync(cancellationToken);
 
-                return View(new CreateGroupViewModel { Courses = courses });
-            }
-            catch(OperationCanceledException) 
-            {
-                return RedirectToAction("Index");
-            }
+            return View(new CreateGroupViewModel { Courses = courses });
         }
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateGroup(CreateGroupViewModel groupViewModel, CancellationToken cancellationToken)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    await _groupsService.CreateGroupAsync(groupViewModel.Name, groupViewModel.CourseId, cancellationToken);
+                await _groupsService.CreateGroupAsync(groupViewModel.Name, groupViewModel.CourseId, cancellationToken);
 
-                    return RedirectToAction("Index");
-                }
-
-                groupViewModel.Courses = await _groupsService.GetCoursesAsync(cancellationToken);
-
-                return View(groupViewModel);
-            }
-            catch(OperationCanceledException)
-            {
                 return RedirectToAction("Index");
             }
+
+            groupViewModel.Courses = await _groupsService.GetCoursesAsync(cancellationToken);
+
+            return View(groupViewModel);
         }
 
         [HttpGet("edit/{id}")]
         public async Task<IActionResult> EditGroup(int id, CancellationToken cancellationToken)
         {
-            try
-            {
-                GroupEditDto groupEditDto = await _groupsService.GetEditGroupDtoAsync(id, cancellationToken);
+            GroupEditDto groupEditDto = await _groupsService.GetEditGroupDtoAsync(id, cancellationToken);
 
-                return View(new EditGroupViewModel
-                {
-                    Name = groupEditDto.Group.Name,
-                    Courses = groupEditDto.Courses,
-                    Id = groupEditDto.Group.Id,
-                    CourseId = groupEditDto.Group.CourseId,
-                });
-            }
-            catch(OperationCanceledException) 
+            return View(new EditGroupViewModel
             {
-                return RedirectToAction("Index");
-            }
+                Name = groupEditDto.Group.Name,
+                Courses = groupEditDto.Courses,
+                Id = groupEditDto.Group.Id,
+                CourseId = groupEditDto.Group.CourseId,
+            });
         }
 
         [HttpPost("edit/{id}")]
         public async Task<IActionResult> EditGroup(EditGroupViewModel viewModel, CancellationToken cancellationToken)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    await _groupsService.EditGroupAsync(viewModel.Name, viewModel.Id, viewModel.CourseId, cancellationToken);
+                await _groupsService.EditGroupAsync(viewModel.Name, viewModel.Id, viewModel.CourseId, cancellationToken);
 
-                    return RedirectToAction("Index");
-                }
-
-                viewModel.Courses = await _groupsService.GetCoursesAsync(cancellationToken);
-
-                return View(viewModel);
-            }
-            catch(OperationCanceledException) 
-            {
                 return RedirectToAction("Index");
             }
+
+            viewModel.Courses = await _groupsService.GetCoursesAsync(cancellationToken);
+
+            return View(viewModel);
         }
     }
 }
