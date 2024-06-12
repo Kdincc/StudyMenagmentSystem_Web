@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Task10.Core;
 using Task10.Infrastructure;
 
@@ -11,10 +12,10 @@ namespace Task10.UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //builder.Services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task10 API", Version = "v1" });
-            //});
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task10 API", Version = "v1" });
+            });
 
             builder.Services.AddControllersWithViews();
 
@@ -22,14 +23,15 @@ namespace Task10.UI
 
             var app = builder.Build();
 
-            //if (app.Environment.IsDevelopment()) 
-            //{
-            //    app.UseSwaggerUI(c =>
-            //    {
-            //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            //        c.RoutePrefix = string.Empty; // Это сделает Swagger UI доступным на корне URL (http://localhost:<port>/)
-            //    });
-            //}
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
+            }
 
             if (!app.Environment.IsDevelopment())
             {
