@@ -29,6 +29,11 @@ namespace Task10.Infrastructure.Repos
             return await _dbContext.Courses.ToListAsync(cancellationToken);
         }
 
+        public async Task<IEnumerable<Course>> GetAllWithGroupsAndStudentsAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.Courses.Include(c => c.Groups).ThenInclude(g => g.Students).ToListAsync(cancellationToken);
+        }
+
         public async Task<Course> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.Courses.FindAsync(id, cancellationToken);

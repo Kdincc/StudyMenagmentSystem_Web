@@ -5,6 +5,7 @@ using Task10.UI.ViewModels;
 
 namespace Task10.UI.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("groups")]
     public sealed class GroupsController(IGroupsService groupsService) : Controller
     {

@@ -14,7 +14,11 @@ namespace Task10.UI
 
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task10 API", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Task10 API",
+                    Version = "v1"
+                });
             });
 
             builder.Services.AddControllersWithViews();
@@ -24,7 +28,6 @@ namespace Task10.UI
             var app = builder.Build();
 
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
@@ -35,6 +38,8 @@ namespace Task10.UI
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

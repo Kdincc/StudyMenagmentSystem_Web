@@ -11,7 +11,7 @@ namespace Task10.Core.Services
 
         public async Task<СourseList> GetCourses(CancellationToken cancellationToken)
         {
-            IEnumerable<Course> courses = await _coursesRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Course> courses = await _coursesRepository.GetAllWithGroupsAndStudentsAsync(cancellationToken);
 
             return new СourseList(courses);
         }

@@ -5,6 +5,7 @@ using Task10.UI.ViewModels;
 
 namespace Task10.UI.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("students")]
     public sealed class StudentsController(IStudentsService studentsService) : Controller
     {
