@@ -13,5 +13,7 @@ namespace Task10.Core.Interfaces
         public Task UpdateAsync(int id, CancellationToken cancellationToken);
 
         public Task DeleteAsync(int id, CancellationToken cancellationToken);
+
+        public Task<bool> ContainsAsync(int entityId, CancellationToken cancellationToken);
     }
 }

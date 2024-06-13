@@ -54,5 +54,17 @@ namespace Task10.Infrastructure.Repos
 
             return group;
         }
+
+        public async Task<bool> ContainsAsync(int entityId, CancellationToken cancellationToken)
+        {
+            Group group = await _coursesDbContext.Groups.FindAsync(entityId, cancellationToken);
+
+            if (group is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

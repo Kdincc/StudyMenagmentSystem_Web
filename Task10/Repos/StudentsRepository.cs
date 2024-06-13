@@ -47,5 +47,17 @@ namespace Task10.Infrastructure.Repos
         {
             return await _dbContext.Students.Include(s => s.Group).ToListAsync(cancellationToken);
         }
+
+        public async Task<bool> ContainsAsync(int entityId, CancellationToken cancellationToken)
+        {
+            Student student = await _dbContext.Students.FindAsync(entityId, cancellationToken);
+
+            if (student is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -39,6 +39,18 @@ namespace Task10.Infrastructure.Repos
             return await _dbContext.Courses.FindAsync(id, cancellationToken);
         }
 
+        public async Task<bool> ContainsAsync(int entityId, CancellationToken cancellationToken)
+        {
+            Course course = await _dbContext.Courses.FindAsync(entityId, cancellationToken); 
+
+            if (course is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task UpdateAsync(int id, CancellationToken cancellationToken)
         {
             Course course = await _dbContext.Courses.FindAsync(id, cancellationToken);
