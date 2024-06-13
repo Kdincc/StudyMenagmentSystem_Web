@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task10.Core.DTOs;
+using Task10.Core.Aggregates;
 using Task10.Core.Interfaces;
-using Task10.Test.Core.Models;
 
 namespace Task10.UI.ApiControllers
 {
     [ApiController]
-    public class HomeApiController(IHomeService homeService) : ControllerBase
+    public class HomeApiController(IHomeApiService homeService) : ControllerBase
     {
-        private readonly IHomeService _homeService = homeService;
+        private readonly IHomeApiService _homeService = homeService;
 
-        [Route("api/all")]
+        [Route("api/home/courses")]
         [HttpGet]
-        [ProducesResponseType<IEnumerable<Course>>(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll(CancellationToken token)
+        [ProducesResponseType<СourseList>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCourses(CancellationToken token)
         {
-            HomeDto dto = await _homeService.GetHomeDtoAsync(token);
+            СourseList list = await _homeService.GetCourses(token);
 
-            return Ok(dto.Courses);
+            return Ok(list);
         }
     }
 }

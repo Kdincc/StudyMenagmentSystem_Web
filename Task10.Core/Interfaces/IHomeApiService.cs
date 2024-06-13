@@ -10,6 +10,6 @@ namespace Task10.Core.Interfaces
 {
     public interface IHomeApiService
     {
-        public Task<СourseList> GetCourses();
+        public Task<СourseList> GetCourses(CancellationToken cancellationToken);
     }
 }

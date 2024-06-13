@@ -11,6 +11,7 @@ namespace Task10.Core
             services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<IGroupsService, GroupsService>();
             services.AddScoped<IStudentsService, StudentsService>();
+            services.AddScoped<IHomeApiService, HomeApiService>();
 
             return services;
         }
