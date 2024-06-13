@@ -24,6 +24,7 @@
                          model => model.GroupId,
                          new SelectList(Model.Groups, "Id", "Name"),
                          new { @class = "edit-group-select" })
+                @Html.ValidationMessageFor(m => m.GroupId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div>

@@ -6,11 +6,11 @@ using Task10.Test.Core.Models;
 namespace Task10.UI.ApiControllers
 {
     [ApiController]
-    public sealed class HomeApiController(IHomeService homeService) : ControllerBase
+    public class HomeApiController(IHomeService homeService) : ControllerBase
     {
         private readonly IHomeService _homeService = homeService;
 
-        [Route("api/home/all")]
+        [Route("api/all")]
         [HttpGet]
         [ProducesResponseType<IEnumerable<Course>>(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(CancellationToken token)

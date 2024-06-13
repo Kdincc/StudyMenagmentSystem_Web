@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Task10.Core.DTOs;
 
 namespace Task10.UI.ViewModels
@@ -15,7 +16,8 @@ namespace Task10.UI.ViewModels
         [StringLength(30)]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Group is required, try to add some groups first")]
+        [NotNull]
         public int GroupId { get; set; }
     }
 }
