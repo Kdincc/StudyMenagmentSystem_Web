@@ -1,4 +1,5 @@
-﻿using Task10.Core.DTOs;
+﻿using Task10.Core.Aggregates;
+using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
 using Task10.Test.Core.Interfaces;
 using Task10.Test.Core.Models;
@@ -10,6 +11,13 @@ namespace Task10.Core.Services
         private readonly ICoursesRepository _coursesRepository = coursesRepository;
         private readonly IGroupsRepository _groupsRepository = groupsRepository;
         private readonly IStudentsRepository _studentsRepository = studentsRepository;
+
+        public async Task<СourseList> GetCourseListAsync(CancellationToken cancellationToken)
+        {
+            IEnumerable<Course> courses = await _coursesRepository.GetAllWithGroupsAndStudentsAsync(cancellationToken);
+
+            return new СourseList(courses);
+        }
 
         public async Task<HomeDto> GetHomeDtoAsync(CancellationToken cancellationToken)
         {

@@ -80,7 +80,7 @@ namespace Task10.UI.Controllers
             });
         }
 
-        [HttpPost("edit/{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<IActionResult> EditGroup(EditGroupViewModel viewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)

@@ -1,4 +1,5 @@
-﻿using Task10.Core.DTOs;
+﻿using Task10.Core.Aggregates;
+using Task10.Core.DTOs;
 
 namespace Task10.Core.Interfaces
 {

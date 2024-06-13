@@ -6,15 +6,15 @@ namespace Task10.UI.ApiControllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HomeApiController(IHomeApiService homeService) : ControllerBase
+    public class HomeApiController(IHomeService homeService) : ControllerBase
     {
-        private readonly IHomeApiService _homeService = homeService;
+        private readonly IHomeService _homeService = homeService;
 
         [HttpGet("courses")]
-        [ProducesResponseType(typeof(СourseList), StatusCodes.Status200OK)]
+        [ProducesResponseType<СourseList>(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCourses(CancellationToken token)
         {
-            СourseList list = await _homeService.GetCourses(token);
+            СourseList list = await _homeService.GetCourseListAsync(token);
 
             return Ok(list);
         }
