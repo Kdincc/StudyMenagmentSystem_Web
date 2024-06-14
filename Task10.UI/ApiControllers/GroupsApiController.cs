@@ -44,7 +44,7 @@ namespace Task10.UI.ApiControllers
         {
             bool isDeleted = await _groupsService.DeleteGroupAsync(id, cancellationToken);
 
-            if (isDeleted) 
+            if (isDeleted)
             {
                 return NoContent();
             }

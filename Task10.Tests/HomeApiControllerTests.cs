@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task10.Core.Aggregates;
 using Task10.Core.Interfaces;
-using Task10.Test.Core.Models;
 using Task10.UI.ApiControllers;
 
 namespace Task10.Tests

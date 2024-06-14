@@ -68,7 +68,7 @@ namespace MyProject.Tests
 
         [TestMethod]
         public async Task DeleteStudent_ReturnsNoContent()
-        { 
+        {
             // Setup
             _mockStudentsService.Setup(service => service.DeleteStudentAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);

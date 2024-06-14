@@ -1,6 +1,4 @@
 using Microsoft.OpenApi.Models;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Task10.Core;
 using Task10.Infrastructure;
 
@@ -14,7 +12,7 @@ namespace Task10.UI
 
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Task10 API",
                     Version = "v1"
