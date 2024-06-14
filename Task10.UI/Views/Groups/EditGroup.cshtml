@@ -5,8 +5,10 @@
 <div class="main-container">
     <h1 class="header-class">Edit Group</h1>
     
-    @using (Html.BeginForm("EditGroup", "Groups", FormMethod.Post))
+    @using (Html.BeginForm("EditGroup", "Groups"))
     {
+        @Html.AntiForgeryToken();
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="d-flex flex-column">
             <div class="form-group">
@@ -22,6 +24,10 @@
                     new { @class = "edit-group-select" })
             </div>
         </div>
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.Hidden("_method", "PUT")
+
 
         <div>
             <button class="form-button" type="submit">Save</button>

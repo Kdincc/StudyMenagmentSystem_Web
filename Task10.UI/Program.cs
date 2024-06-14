@@ -39,6 +39,22 @@ namespace Task10.UI
                 app.UseHsts();
             }
 
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Method == "POST" && context.Request.Form["_method"] == "PUT")
+                {
+                    context.Request.Method = "PUT";
+                }
+
+                if (context.Request.Method == "POST" && context.Request.Form["_method"] == "DELETE")
+                {
+                    context.Request.Method = "DELETE";
+                }
+
+                await next();
+
+            });
+
             app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();

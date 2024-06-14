@@ -21,7 +21,7 @@ namespace Task10.Core.Services
         {
             Group group = await _groupsRepository.GetGroupWithStudents(groupId, cancellationToken);
 
-            if (group.Students.Count != 0 || await _groupsRepository.ContainsAsync(groupId, cancellationToken))
+            if (group.Students.Count != 0 || !await _groupsRepository.ContainsAsync(groupId, cancellationToken))
             {
                 return false;
             }

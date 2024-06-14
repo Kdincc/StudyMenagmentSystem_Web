@@ -36,7 +36,7 @@ namespace Task10.UI.Controllers
                 });
         }
 
-        [HttpPost("edit/{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<IActionResult> Edit(EditStudentViewModel studentViewModel, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace Task10.UI.Controllers
             return View(new DeleteStudentViewModel() { Name = dto.Name, LastName = dto.LastName, Id = dto.Id });
         }
 
-        [HttpPost("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(DeleteStudentViewModel viewModel, CancellationToken cancellationToken)
         {
             await _studentsService.DeleteStudentAsync(viewModel.Id, cancellationToken);

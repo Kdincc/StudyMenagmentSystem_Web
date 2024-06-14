@@ -37,14 +37,14 @@ namespace Task10.UI.ApiControllers
             return Created();
         }
 
-        [HttpPost("delete/{id:int}")]
+        [HttpDelete("delete/{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteGroup(int id, CancellationToken cancellationToken)
         {
             bool isDeleted = await _groupsService.DeleteGroupAsync(id, cancellationToken);
 
-            if(isDeleted) 
+            if (isDeleted) 
             {
                 return NoContent();
             }

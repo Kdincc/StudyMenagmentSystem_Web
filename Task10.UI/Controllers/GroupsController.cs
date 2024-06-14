@@ -28,7 +28,7 @@ namespace Task10.UI.Controllers
             return View(new DeleteGroupViewModel { Id = dto.Id, Name = dto.Name });
         }
 
-        [HttpPost("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(DeleteGroupViewModel viewModel, CancellationToken cancellationToken)
         {
             bool isDeleted = await _groupsService.DeleteGroupAsync(viewModel.Id, cancellationToken);
