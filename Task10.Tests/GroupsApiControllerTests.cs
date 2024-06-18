@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
@@ -33,6 +34,7 @@ namespace Task10.Tests
             var okResult = result as OkObjectResult;
 
             // Assert
+            Assert.AreEqual(okResult.StatusCode, StatusCodes.Status200OK);
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
             Assert.IsNotNull(okResult);
             Assert.AreEqual(groupList, okResult.Value);
@@ -47,8 +49,10 @@ namespace Task10.Tests
 
             // Act
             var result = await _controller.EditGroup(1, "New Group", 2, CancellationToken.None);
+            var noContent = result as NoContentResult;
 
             // Assert
+            Assert.AreEqual(noContent.StatusCode, StatusCodes.Status204NoContent);
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
         }
 
@@ -60,9 +64,10 @@ namespace Task10.Tests
                 .Returns(Task.CompletedTask);
 
             // Act
-            var result = await _controller.CreateGroup("New Group", 1, CancellationToken.None);
+            var created = result as CreatedResult;
 
             // Assert
+            Assert.AreEqual(created.StatusCode, StatusCodes.Status201Created);
             Assert.IsInstanceOfType(result, typeof(CreatedResult));
         }
 
@@ -75,8 +80,10 @@ namespace Task10.Tests
 
             // Act
             var result = await _controller.DeleteGroup(1, CancellationToken.None);
+            var noContent = result as NoContentResult;
 
             // Assert
+            Assert.AreEqual(noContent.StatusCode, StatusCodes.Status204NoContent);
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
         }
 
@@ -92,6 +99,7 @@ namespace Task10.Tests
             var badRequestResult = result as BadRequestObjectResult;
 
             // Assert
+            Assert.AreEqual(badRequestResult.StatusCode, StatusCodes.Status400BadRequest);
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
             Assert.IsNotNull(badRequestResult);
             Assert.AreEqual("Only groups with no students can be deleted!", badRequestResult.Value);
