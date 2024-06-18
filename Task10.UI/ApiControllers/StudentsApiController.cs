@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
+using Task10.Test.Core.Models;
 
 namespace Task10.UI.ApiControllers
 {
@@ -29,12 +30,12 @@ namespace Task10.UI.ApiControllers
         }
 
         [HttpPost("create/{name}/{lastName}/{groupId:int}")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType<Student>(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateStudent(string name, string lastName, int groupId, CancellationToken cancellationToken)
         {
             await _studentsService.CreateStudentAsync(name, lastName, groupId, cancellationToken);
 
-            return Created();
+            return CreatedAtAction(nameof(CreateStudent), new Student() { Name = name, LastName = lastName, GroupId = groupId });
         }
 
         [HttpDelete("delete/{studentId:int}")]

@@ -39,14 +39,17 @@ namespace Task10.UI
 
             app.Use(async (context, next) =>
             {
-                if (context.Request.Method == "POST" && context.Request.Form["_method"] == "PUT")
+                if (context.Request.HasFormContentType)
                 {
-                    context.Request.Method = "PUT";
-                }
+                    if (context.Request.Method == "POST" && context.Request.Form["_method"] == "PUT")
+                    {
+                        context.Request.Method = "PUT";
+                    }
 
-                if (context.Request.Method == "POST" && context.Request.Form["_method"] == "DELETE")
-                {
-                    context.Request.Method = "DELETE";
+                    if (context.Request.Method == "POST" && context.Request.Form["_method"] == "DELETE")
+                    {
+                        context.Request.Method = "DELETE";
+                    }
                 }
 
                 await next();

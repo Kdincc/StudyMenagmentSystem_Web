@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Task10.Core.Aggregates;
 using Task10.Core.Interfaces;
@@ -33,6 +34,7 @@ namespace Task10.Tests
             var okResult = result as OkObjectResult;
 
             // Assert
+            Assert.AreEqual(okResult.StatusCode, StatusCodes.Status200OK);
             Assert.IsInstanceOfType(result, typeof(OkObjectResult));
             Assert.IsNotNull(okResult);
             Assert.AreEqual(courseList, okResult.Value);

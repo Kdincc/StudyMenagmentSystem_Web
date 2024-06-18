@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
+using Task10.Test.Core.Models;
 
 namespace Task10.UI.ApiControllers
 {
@@ -29,12 +31,12 @@ namespace Task10.UI.ApiControllers
         }
 
         [HttpPost("create/{name}/{courseId:int}")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType<Group>(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateGroup(string name, int courseId, CancellationToken cancellationToken)
         {
             await _groupsService.CreateGroupAsync(name, courseId, cancellationToken);
 
-            return Created();
+            return CreatedAtAction(nameof(CreateGroup), new Group() { Name = name, CourseId = courseId });
         }
 
         [HttpDelete("delete/{id:int}")]

@@ -64,11 +64,12 @@ namespace Task10.Tests
                 .Returns(Task.CompletedTask);
 
             // Act
-            var created = result as CreatedResult;
+            var result = await _controller.CreateGroup("New Group", 1, CancellationToken.None);
+            var created = result as CreatedAtActionResult;
 
             // Assert
             Assert.AreEqual(created.StatusCode, StatusCodes.Status201Created);
-            Assert.IsInstanceOfType(result, typeof(CreatedResult));
+            Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
         }
 
         [TestMethod]
