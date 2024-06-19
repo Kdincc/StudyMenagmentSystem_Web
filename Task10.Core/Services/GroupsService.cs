@@ -84,5 +84,25 @@ namespace Task10.Core.Services
                 CourseName = group.Course.Name
             });
         }
+
+        public async Task<bool> IsCourseExistsAsync(int courseId, CancellationToken cancellationToken)
+        {
+            if (await _coursesRepository.ContainsAsync(courseId, cancellationToken)) 
+            { 
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> IsGroupExistsAsync(int groupId, CancellationToken cancellationToken)
+        {
+            if (await _groupsRepository.ContainsAsync(groupId, cancellationToken))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

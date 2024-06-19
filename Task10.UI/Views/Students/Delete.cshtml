@@ -2,7 +2,7 @@
 @model DeleteStudentViewModel
 
 <div class="main-container">
-    <h1 class="header-class">Are you sure you want to delete @Model.Name @Model.LastName student ?</h1>
+    <h1 class="header-class">Are you sure you want to delete @Model.Name @Model.LastName ?</h1>
     @using (Html.BeginForm("Delete", "Students", FormMethod.Post))
     {
         <div class="d-flex flex-column">

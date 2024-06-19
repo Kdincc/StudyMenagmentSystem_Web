@@ -22,8 +22,22 @@ namespace Task10.UI.ApiControllers
 
         [HttpPut("edit/{studentId:int}/{groupId:int}/{name}/{lastName}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditStudent(int studentId, int groupId, string name, string lastName, CancellationToken cancellationToken)
         {
+            bool isStudentNotExists = !await _studentsService.IsStudentExistsAsync(studentId, cancellationToken);
+            bool isGroupNotExists = !await _studentsService.IsGroupExistsAsync(groupId, cancellationToken);
+
+            if (isStudentNotExists)
+            {
+                return NotFound($"Student with that id {studentId} not found!");
+            }
+
+            if (isGroupNotExists) 
+            {
+                return NotFound($"Group with that id {groupId} not found!");
+            }
+
             await _studentsService.EditStudentAsync(name, lastName, studentId, groupId, cancellationToken);
 
             return NoContent();
@@ -31,8 +45,16 @@ namespace Task10.UI.ApiControllers
 
         [HttpPost("create/{name}/{lastName}/{groupId:int}")]
         [ProducesResponseType<Student>(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateStudent(string name, string lastName, int groupId, CancellationToken cancellationToken)
         {
+            bool isGroupNotExists = !await _studentsService.IsGroupExistsAsync(groupId, cancellationToken);
+
+            if (isGroupNotExists)
+            {
+                return NotFound($"Group with that id {groupId} not found!");
+            }
+
             await _studentsService.CreateStudentAsync(name, lastName, groupId, cancellationToken);
 
             return CreatedAtAction(nameof(CreateStudent), new Student() { Name = name, LastName = lastName, GroupId = groupId });
@@ -40,8 +62,16 @@ namespace Task10.UI.ApiControllers
 
         [HttpDelete("delete/{studentId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteGroup(int studentId, CancellationToken cancellationToken)
         {
+            bool isStudentNotExists = !await _studentsService.IsStudentExistsAsync(studentId, cancellationToken);
+
+            if (isStudentNotExists)
+            {
+                return NotFound($"Student with that id {studentId} not found!");
+            }
+
             await _studentsService.DeleteStudentAsync(studentId, cancellationToken);
 
             return NoContent();

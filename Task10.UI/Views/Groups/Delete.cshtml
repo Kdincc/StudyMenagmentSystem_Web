@@ -2,7 +2,7 @@
 @model DeleteGroupViewModel
 
 <div class="main-container">
-    <h1 class="header-class">Are you sure you want to delete @Model.Name group ?</h1>
+    <h1 class="header-class">Are you sure you want to delete @Model.Name ?</h1>
     @using (Html.BeginForm("Delete", "Groups", FormMethod.Post))
     {
         <div class="d-flex flex-column">

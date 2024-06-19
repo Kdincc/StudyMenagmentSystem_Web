@@ -81,5 +81,25 @@ namespace Task10.Core.Services
 
             return studentDtos;
         }
+
+        public async Task<bool> IsGroupExistsAsync(int groupId, CancellationToken cancellationToken)
+        {
+            if (await _studentsRepository.ContainsAsync(groupId, cancellationToken))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> IsStudentExistsAsync(int studentId, CancellationToken cancellationToken)
+        {
+            if (await _groupsRepository.ContainsAsync(studentId, cancellationToken))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

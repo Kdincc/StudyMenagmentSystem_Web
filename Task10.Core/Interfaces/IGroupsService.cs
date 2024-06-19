@@ -17,5 +17,9 @@ namespace Task10.Core.Interfaces
         public Task<IEnumerable<CourseDto>> GetCoursesAsync(CancellationToken cancellationToken);
 
         public Task<DeleteGroupDto> GetDeleteGroupDto(int id, CancellationToken cancellationToken);
+
+        public Task<bool> IsGroupExistsAsync(int groupId, CancellationToken cancellationToken);
+
+        public Task<bool> IsCourseExistsAsync(int courseId, CancellationToken cancellationToken);
     }
 }
