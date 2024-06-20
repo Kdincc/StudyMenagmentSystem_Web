@@ -7,6 +7,7 @@ using Task10.Core.Interfaces;
 using Task10.Test.Core.Models;
 using Task10.UI.ApiControllers;
 using Task10.UI.Controllers;
+using Task10.UI.ViewModels;
 
 namespace Task10.Tests
 {
@@ -46,6 +47,17 @@ namespace Task10.Tests
         [TestMethod]
         public async Task EditGroup_ReturnsNoContent()
         {
+            // Arrange
+            string groupName = "New Group";
+            int courseId = 2;
+            int groupId = 1;
+            var viewModel = new EditGroupViewModel()
+            {
+                Name = groupName,
+                CourseId = courseId,
+                Id = groupId
+            };
+
             // Setup
             _mockGroupsService.Setup(service => service.EditGroupAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
@@ -55,7 +67,7 @@ namespace Task10.Tests
                .ReturnsAsync(true);
 
             // Act
-            var result = await _controller.EditGroup(1, "New Group", 2, CancellationToken.None);
+            var result = await _controller.EditGroup(viewModel, CancellationToken.None);
             var noContent = result as NoContentResult;
 
             // Assert
@@ -66,6 +78,15 @@ namespace Task10.Tests
         [TestMethod]
         public async Task CreateGroup_ReturnsCreated()
         {
+            // Arrange
+            string groupName = "New Group";
+            int courseId = 1;
+            var viewModel = new CreateGroupViewModel()
+            {
+                Name = groupName,
+                CourseId = courseId,
+            };
+
             // Setup
             _mockGroupsService.Setup(service => service.CreateGroupAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
@@ -73,7 +94,7 @@ namespace Task10.Tests
                .ReturnsAsync(true);
 
             // Act
-            var result = await _controller.CreateGroup("New Group", 1, CancellationToken.None);
+            var result = await _controller.CreateGroup(viewModel, CancellationToken.None);
             var created = result as CreatedAtActionResult;
 
             // Assert
@@ -148,6 +169,11 @@ namespace Task10.Tests
             var groupName = "TestGroup";
             var courseId = 1;
             var cancellationToken = CancellationToken.None;
+            var viewModel = new CreateGroupViewModel()
+            {
+                Name = groupName,
+                CourseId = courseId,
+            };
 
             // Setup
             _mockGroupsService
@@ -155,7 +181,7 @@ namespace Task10.Tests
                 .ReturnsAsync(false);
 
             // Act
-            var result = await _controller.CreateGroup(groupName, courseId, cancellationToken);
+            var result = await _controller.CreateGroup(viewModel, cancellationToken);
             var notFoundResult = result as NotFoundObjectResult;
 
             // Assert
@@ -172,6 +198,12 @@ namespace Task10.Tests
             var groupName = "TestGroup";
             var courseId = 1;
             var cancellationToken = CancellationToken.None;
+            var viewModel = new EditGroupViewModel()
+            {
+                Id = groupId,
+                Name = groupName,
+                CourseId = courseId,
+            };
 
             //Setup
             _mockGroupsService
@@ -182,7 +214,7 @@ namespace Task10.Tests
                 .ReturnsAsync(false);
 
             // Act
-            var result = await _controller.EditGroup(groupId, groupName, courseId, cancellationToken);
+            var result = await _controller.EditGroup(viewModel, cancellationToken);
             var notFoundResult = result as NotFoundObjectResult;
 
             // Assert
@@ -199,6 +231,12 @@ namespace Task10.Tests
             var groupName = "TestGroup";
             var courseId = 1;
             var cancellationToken = CancellationToken.None;
+            var viewModel = new EditGroupViewModel()
+            {
+                Id = groupId,
+                Name = groupName,
+                CourseId = courseId,
+            };
 
             //Setup
             _mockGroupsService
@@ -209,11 +247,11 @@ namespace Task10.Tests
                 .ReturnsAsync(true);
 
             // Act
-            var result = await _controller.EditGroup(groupId, groupName, courseId, cancellationToken);
+            var result = await _controller.EditGroup(viewModel, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
-            var notFoundResult = result as NotFoundObjectResult;
             Assert.IsNotNull(notFoundResult);
             Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
         }

@@ -7,6 +7,7 @@ using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
 using Task10.Test.Core.Models;
 using Task10.UI.ApiControllers;
+using Task10.UI.ViewModels;
 
 namespace MyProject.Tests
 {
@@ -46,6 +47,20 @@ namespace MyProject.Tests
         [TestMethod]
         public async Task EditStudent_ReturnsNoContent()
         {
+            // Arrange
+            var studentId = 1;
+            var groupId = 1;
+            var name = "John";
+            var lastName = "Doe";
+            var cancellationToken = CancellationToken.None;
+            var viewModel = new EditStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+                Id = studentId
+            };
+
             // Setup
             _mockStudentsService.Setup(service => service.EditStudentAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
@@ -55,7 +70,7 @@ namespace MyProject.Tests
                 .ReturnsAsync(true);
 
             // Act
-            var result = await _controller.EditStudent(1, 1, "John", "Doe", CancellationToken.None);
+            var result = await _controller.EditStudent(viewModel, CancellationToken.None);
             var noContent = result as NoContentResult;
 
             // Assert
@@ -66,6 +81,18 @@ namespace MyProject.Tests
         [TestMethod]
         public async Task CreateStudent_ReturnsCreated()
         {
+            // Arrange
+            var name = "John";
+            var lastName = "Doe";
+            var groupId = 1;
+            var cancellationToken = CancellationToken.None;
+            var viewModel = new CreateStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+            };
+
             // Setup
             _mockStudentsService.Setup(service => service.CreateStudentAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
@@ -73,7 +100,7 @@ namespace MyProject.Tests
                 .ReturnsAsync(true);
 
             // Act
-            var result = await _controller.CreateStudent("John", "Doe", 1, CancellationToken.None);
+            var result = await _controller.CreateStudent(viewModel, CancellationToken.None);
             var created = result as CreatedAtActionResult;
 
             // Assert
@@ -108,6 +135,13 @@ namespace MyProject.Tests
             var name = "John";
             var lastName = "Doe";
             var cancellationToken = CancellationToken.None;
+            var viewModel = new EditStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+                Id = studentId
+            };
 
             var mockStudentsService = new Mock<IStudentsService>();
             _mockStudentsService
@@ -118,7 +152,7 @@ namespace MyProject.Tests
                 .ReturnsAsync(true);
 
             // Act
-            var result = await _controller.EditStudent(studentId, groupId, name, lastName, cancellationToken);
+            var result = await _controller.EditStudent(viewModel, cancellationToken);
             var notFoundResult = result as NotFoundObjectResult;
 
             // Assert
@@ -136,6 +170,13 @@ namespace MyProject.Tests
             var name = "John";
             var lastName = "Doe";
             var cancellationToken = CancellationToken.None;
+            var viewModel = new EditStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+                Id = studentId
+            };
 
             _mockStudentsService
                 .Setup(service => service.IsStudentExistsAsync(studentId, cancellationToken))
@@ -145,7 +186,7 @@ namespace MyProject.Tests
                 .ReturnsAsync(false);
 
             // Act
-            var result = await _controller.EditStudent(studentId, groupId, name, lastName, cancellationToken);
+            var result = await _controller.EditStudent(viewModel, cancellationToken);
             var notFoundResult = result as NotFoundObjectResult;
 
             // Assert
@@ -162,13 +203,19 @@ namespace MyProject.Tests
             var lastName = "Doe";
             var groupId = 1;
             var cancellationToken = CancellationToken.None;
+            var viewModel = new CreateStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+            };
 
             _mockStudentsService
                 .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
                 .ReturnsAsync(false);
 
             // Act
-            var result = await _controller.CreateStudent(name, lastName, groupId, cancellationToken);
+            var result = await _controller.CreateStudent(viewModel, cancellationToken);
             var notFoundResult = result as NotFoundObjectResult;
 
             // Assert
