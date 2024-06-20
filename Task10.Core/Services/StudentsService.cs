@@ -84,7 +84,7 @@ namespace Task10.Core.Services
 
         public async Task<bool> IsGroupExistsAsync(int groupId, CancellationToken cancellationToken)
         {
-            if (await _studentsRepository.ContainsAsync(groupId, cancellationToken))
+            if (await _groupsRepository.ContainsAsync(groupId, cancellationToken))
             {
                 return true;
             }
@@ -94,7 +94,7 @@ namespace Task10.Core.Services
 
         public async Task<bool> IsStudentExistsAsync(int studentId, CancellationToken cancellationToken)
         {
-            if (await _groupsRepository.ContainsAsync(studentId, cancellationToken))
+            if (await _studentsRepository.ContainsAsync(studentId, cancellationToken))
             {
                 return true;
             }
