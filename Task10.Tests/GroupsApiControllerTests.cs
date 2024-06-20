@@ -21,6 +21,8 @@ namespace Task10.Tests
         {
             _mockGroupsService = new Mock<IGroupsService>();
             _controller = new GroupsApiController(_mockGroupsService.Object);
+            _controller.ControllerContext = new ControllerContext();
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
         }
 
         [TestMethod]
@@ -254,6 +256,54 @@ namespace Task10.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
             Assert.IsNotNull(notFoundResult);
             Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task EditGroup_InvalidStringLenght_ReturnBadRequest()
+        {
+            // Arrange
+            var invalidName = new string('A', 31);
+            var courseId = 1;
+            var groupId = 1;
+            var viewModel = new EditGroupViewModel()
+            {
+                Name = invalidName,
+                CourseId = courseId,
+                Id = groupId
+            };
+            _controller.ModelState.AddModelError("", "");
+
+            // Act
+            var result = await _controller.EditGroup(viewModel, CancellationToken.None);
+            var badRequest = result as BadRequestObjectResult;
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            Assert.IsNotNull(badRequest);
+            Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateGroup_InvalidStringLenght_ReturnBadRequest()
+        {
+            // Arrange
+            var invalidName = new string('A', 31);
+            var courseId = 1;
+            var viewModel = new CreateGroupViewModel()
+            {
+                Name = invalidName,
+                CourseId = courseId,
+            };
+            _controller.ModelState.AddModelError("", "");
+
+            // Act
+            var result = await _controller.CreateGroup(viewModel, CancellationToken.None);
+            var badRequest = result as BadRequestObjectResult;
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            Assert.IsNotNull(badRequest);
+            Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
         }
     }
 }

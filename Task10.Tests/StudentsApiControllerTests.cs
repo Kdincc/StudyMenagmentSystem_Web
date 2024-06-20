@@ -21,6 +21,9 @@ namespace MyProject.Tests
         {
             _mockStudentsService = new Mock<IStudentsService>();
             _controller = new StudentsApiController(_mockStudentsService.Object);
+            _controller.ControllerContext = new ControllerContext();
+            _controller.ControllerContext.HttpContext = new DefaultHttpContext();
+
         }
 
         [TestMethod]
@@ -222,6 +225,59 @@ namespace MyProject.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
             Assert.IsNotNull(notFoundResult);
             Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        [DataRow("valid name", "invalidLastNameeeeeeeeeeeeeeeeeeeeeeeeeeeeee")]
+        [DataRow("ivalid nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "validLastname")]
+        public async Task EditStudent_InvalidStringLenght_ReturnBadRequest(string name, string lastName)
+        {
+            // Arrange
+            var studentId = 1;
+            var groupId = 1;
+            var viewModel = new EditStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+                Id = studentId
+            };
+            _controller.ModelState.AddModelError("", "");
+
+
+            // Act
+            var result = await _controller.EditStudent(viewModel, CancellationToken.None);
+            var badRequest = result as BadRequestObjectResult;
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            Assert.IsNotNull(badRequest);
+            Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+        }
+
+        [TestMethod]
+        [DataRow("valid name", "invalidLastNameeeeeeeeeeeeeeeeeeeeeeeeeeeeee")]
+        [DataRow("ivalid nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "validLastname")]
+        public async Task CreateStudent_InvalidStringLenght_ReturnBadRequest(string name, string lastName)
+        {
+            // Arrange
+            var groupId = 1;
+            var viewModel = new CreateStudentViewModel()
+            {
+                Name = name,
+                LastName = lastName,
+                GroupId = groupId,
+            };
+            _controller.ModelState.AddModelError("", "");
+
+            // Act
+            var result = await _controller.CreateStudent(viewModel, CancellationToken.None);
+            var badRequest = result as BadRequestObjectResult;
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
+            Assert.IsNotNull(badRequest);
+            Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
         }
 
         [TestMethod]
