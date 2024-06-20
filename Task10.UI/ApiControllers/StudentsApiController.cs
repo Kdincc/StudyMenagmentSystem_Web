@@ -21,7 +21,7 @@ namespace Task10.UI.ApiControllers
             return Ok(students);
         }
 
-        [HttpPut()]
+        [HttpPut("edit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,7 +55,7 @@ namespace Task10.UI.ApiControllers
             return NoContent();
         }
 
-        [HttpPost()]
+        [HttpPost("create")]
         [ProducesResponseType<Student>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -21,7 +21,7 @@ namespace Task10.UI.ApiControllers
             return Ok(groups);
         }
 
-        [HttpPut()]
+        [HttpPut("edit")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
