@@ -1,0 +1,36 @@
+﻿@using Task10.UI.ViewModels;
+
+@model EditGroupViewModel
+
+<div class="main-container">
+    <h1 class="header-class">Edit Group</h1>
+    
+    @using (Html.BeginForm("EditGroup", "Groups"))
+    {
+        @Html.AntiForgeryToken();
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="d-flex flex-column">
+            <div class="form-group">
+                <label class="form-label">Name:</label>
+                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-input", Value = Model.Name } })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label class="form-label">Course:</label>
+                @Html.DropDownListFor(
+                    model => model.CourseId, 
+                    new SelectList(Model.Courses, "Id", "Name"), 
+                    new { @class = "edit-group-select" })
+            </div>
+        </div>
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.Hidden("_method", "PUT")
+
+
+        <div>
+            <button class="form-button" type="submit">Save</button>
+        </div>
+    }
+</div>

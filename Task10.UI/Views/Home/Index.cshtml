@@ -1,0 +1,41 @@
+﻿@using Task10.UI.ViewModels;
+
+@model HomeViewModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="main-container">
+    <h1 class="header-class">Home</h1>
+    <ul class="home-list">
+        @foreach (var course in Model.Courses)
+        {
+            <li class="home-list-li">
+                <details>
+                    <summary>@course.Name</summary>
+                    <ul class="home-list">
+                        @foreach (var group in course.Groups)
+                        {
+                            <li class="home-list-li">
+                                <details>
+                                    <summary>@group.Name</summary>
+                                    <ul class="home-list">
+                                        @foreach (var student in group.Students)
+                                        {
+                                            <li class="home-list-li">
+                                                @student.Name @student.LastName
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </details>
+                            </li>
+                        }
+                    </ul>
+                </details>
+
+            </li>
+        }
+    </ul>
+</div>

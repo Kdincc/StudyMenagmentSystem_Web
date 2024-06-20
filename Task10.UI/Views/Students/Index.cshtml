@@ -1,0 +1,36 @@
+﻿@using Task10.UI.ViewModels
+
+@model StudentListViewModel
+
+<div class="main-container">
+    <div class="d-flex flex-row">
+        <h1 class="header-class">Students</h1>
+        <a class="form-button nav-link text-white ms-auto align-self-end" asp-area="" asp-controller="Students" asp-action="Create">Create</a>
+    </div>
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Full name</th>
+                <th>Group</th>
+                <th>Functionality</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name @student.LastName</td>
+                    <td>@student.GroupName</td>
+                    <td class="">
+                        <div class="d-flex">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id"><p class="content-table-button">Edit</p></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Delete" asp-route-id="@student.Id"><p class="content-table-button-delete">Delete</p></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
