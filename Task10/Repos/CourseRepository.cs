@@ -41,7 +41,7 @@ namespace Task10.Infrastructure.Repos
 
         public async Task<bool> ContainsAsync(int entityId, CancellationToken cancellationToken)
         {
-            Course course = await _dbContext.Courses.FindAsync(entityId, cancellationToken); 
+            Course course = await _dbContext.Courses.FindAsync(entityId, cancellationToken);
 
             if (course is null)
             {

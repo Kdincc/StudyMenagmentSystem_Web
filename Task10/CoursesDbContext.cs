@@ -29,15 +29,15 @@ namespace Task10.Infrastructure
 
         private void SeedData()
         {
-            if (Courses.Any()) 
+            if (Courses.Any())
             {
                 return;
             }
 
             Courses.AddRange(
-                new Course 
-                { 
-                    Name = "SQL" 
+                new Course
+                {
+                    Name = "SQL"
                 },
                 new Course
                 {

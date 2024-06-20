@@ -87,8 +87,8 @@ namespace Task10.Core.Services
 
         public async Task<bool> IsCourseExistsAsync(int courseId, CancellationToken cancellationToken)
         {
-            if (await _coursesRepository.ContainsAsync(courseId, cancellationToken)) 
-            { 
+            if (await _coursesRepository.ContainsAsync(courseId, cancellationToken))
+            {
                 return true;
             }
 

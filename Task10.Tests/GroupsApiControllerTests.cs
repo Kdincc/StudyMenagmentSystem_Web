@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Threading;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
-using Task10.Test.Core.Models;
 using Task10.UI.ApiControllers;
-using Task10.UI.Controllers;
 using Task10.UI.ViewModels;
 
 namespace Task10.Tests
