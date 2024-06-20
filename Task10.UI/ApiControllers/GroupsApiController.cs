@@ -83,5 +83,7 @@ namespace Task10.UI.ApiControllers
 
             return BadRequest("Only groups with no students can be deleted!");
         }
+
+
     }
 }

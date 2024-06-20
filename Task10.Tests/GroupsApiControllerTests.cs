@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Threading;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
+using Task10.Test.Core.Models;
 using Task10.UI.ApiControllers;
+using Task10.UI.Controllers;
 
 namespace Task10.Tests
 {
@@ -46,6 +49,10 @@ namespace Task10.Tests
             // Setup
             _mockGroupsService.Setup(service => service.EditGroupAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
+            _mockGroupsService.Setup(service => service.IsCourseExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(true);
+            _mockGroupsService.Setup(service => service.IsGroupExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(true);
 
             // Act
             var result = await _controller.EditGroup(1, "New Group", 2, CancellationToken.None);
@@ -62,6 +69,8 @@ namespace Task10.Tests
             // Setup
             _mockGroupsService.Setup(service => service.CreateGroupAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
+            _mockGroupsService.Setup(service => service.IsCourseExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(true);
 
             // Act
             var result = await _controller.CreateGroup("New Group", 1, CancellationToken.None);
@@ -77,6 +86,8 @@ namespace Task10.Tests
         {
             // Setup
             _mockGroupsService.Setup(service => service.DeleteGroupAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+            _mockGroupsService.Setup(service => service.IsGroupExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
             // Act
@@ -94,6 +105,8 @@ namespace Task10.Tests
             // Arrange
             _mockGroupsService.Setup(service => service.DeleteGroupAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
+            _mockGroupsService.Setup(service => service.IsGroupExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
             // Act
             var result = await _controller.DeleteGroup(1, CancellationToken.None);
@@ -104,6 +117,105 @@ namespace Task10.Tests
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
             Assert.IsNotNull(badRequestResult);
             Assert.AreEqual("Only groups with no students can be deleted!", badRequestResult.Value);
+        }
+
+        [TestMethod]
+        public async Task DeleteGroup_GroupNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var groupId = 1;
+            var cancellationToken = CancellationToken.None;
+
+            // Setup
+            _mockGroupsService
+                .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.DeleteGroup(groupId, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateGroup_CourseNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var groupName = "TestGroup";
+            var courseId = 1;
+            var cancellationToken = CancellationToken.None;
+
+            // Setup
+            _mockGroupsService
+                .Setup(service => service.IsCourseExistsAsync(courseId, cancellationToken))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.CreateGroup(groupName, courseId, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task EditGroup_GroupNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var groupId = 1;
+            var groupName = "TestGroup";
+            var courseId = 1;
+            var cancellationToken = CancellationToken.None;
+
+            //Setup
+            _mockGroupsService
+                .Setup(service => service.IsCourseExistsAsync(courseId, cancellationToken))
+                .ReturnsAsync(true);
+            _mockGroupsService
+                .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.EditGroup(groupId, groupName, courseId, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task EditGroup_CourseNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var groupId = 1;
+            var groupName = "TestGroup";
+            var courseId = 1;
+            var cancellationToken = CancellationToken.None;
+
+            //Setup
+            _mockGroupsService
+                .Setup(service => service.IsCourseExistsAsync(courseId, cancellationToken))
+                .ReturnsAsync(false);
+            _mockGroupsService
+                .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.EditGroup(groupId, groupName, courseId, cancellationToken);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
         }
     }
 }

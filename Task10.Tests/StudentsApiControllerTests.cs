@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Threading;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
+using Task10.Test.Core.Models;
 using Task10.UI.ApiControllers;
 
 namespace MyProject.Tests
@@ -47,6 +49,10 @@ namespace MyProject.Tests
             // Setup
             _mockStudentsService.Setup(service => service.EditStudentAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
+            _mockStudentsService.Setup(service => service.IsStudentExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+            _mockStudentsService.Setup(service => service.IsGroupExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
             // Act
             var result = await _controller.EditStudent(1, 1, "John", "Doe", CancellationToken.None);
@@ -63,6 +69,8 @@ namespace MyProject.Tests
             // Setup
             _mockStudentsService.Setup(service => service.CreateStudentAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
+            _mockStudentsService.Setup(service => service.IsGroupExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
             // Act
             var result = await _controller.CreateStudent("John", "Doe", 1, CancellationToken.None);
@@ -79,6 +87,8 @@ namespace MyProject.Tests
             // Setup
             _mockStudentsService.Setup(service => service.DeleteStudentAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
+            _mockStudentsService.Setup(service => service.IsStudentExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
             // Act
             var result = await _controller.DeleteGroup(1, CancellationToken.None);
@@ -87,6 +97,105 @@ namespace MyProject.Tests
             // Assert
             Assert.AreEqual(noContent.StatusCode, StatusCodes.Status204NoContent);
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
+        }
+
+        [TestMethod]
+        public async Task EditStudent_StudentNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var studentId = 1;
+            var groupId = 1;
+            var name = "John";
+            var lastName = "Doe";
+            var cancellationToken = CancellationToken.None;
+
+            var mockStudentsService = new Mock<IStudentsService>();
+            _mockStudentsService
+                .Setup(service => service.IsStudentExistsAsync(studentId, cancellationToken))
+                .ReturnsAsync(false);
+            _mockStudentsService
+                .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.EditStudent(studentId, groupId, name, lastName, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task EditStudent_GroupNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var studentId = 1;
+            var groupId = 1;
+            var name = "John";
+            var lastName = "Doe";
+            var cancellationToken = CancellationToken.None;
+
+            _mockStudentsService
+                .Setup(service => service.IsStudentExistsAsync(studentId, cancellationToken))
+                .ReturnsAsync(true);
+            _mockStudentsService
+                .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.EditStudent(studentId, groupId, name, lastName, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CreateStudent_GroupNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var name = "John";
+            var lastName = "Doe";
+            var groupId = 1;
+            var cancellationToken = CancellationToken.None;
+
+            _mockStudentsService
+                .Setup(service => service.IsGroupExistsAsync(groupId, cancellationToken))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.CreateStudent(name, lastName, groupId, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task DeleteStudent_StudentNotExists_ReturnsNotFound()
+        {
+            // Arrange
+            var studentId = 1;
+            var cancellationToken = CancellationToken.None;
+
+            _mockStudentsService
+                .Setup(service => service.IsStudentExistsAsync(studentId, cancellationToken))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.DeleteGroup(studentId, cancellationToken);
+            var notFoundResult = result as NotFoundObjectResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
         }
     }
 }
