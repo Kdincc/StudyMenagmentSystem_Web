@@ -17,6 +17,8 @@ namespace Task10.UI
                     Title = "Task10 API",
                     Version = "v1"
                 });
+
+                c.UseInlineDefinitionsForEnums();
             });
 
             builder.Services.AddControllersWithViews();

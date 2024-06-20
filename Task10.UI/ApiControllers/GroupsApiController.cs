@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
 using Task10.Test.Core.Models;
+using Task10.UI.ViewModels;
 
 namespace Task10.UI.ApiControllers
 {
@@ -22,11 +21,21 @@ namespace Task10.UI.ApiControllers
             return Ok(groups);
         }
 
-        [HttpPut("edit/{groupId:int}/{name}/{courseId:int}")]
+        [HttpPut()]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> EditGroup(int groupId, string name, int courseId, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditGroup([FromBody] EditGroupViewModel viewModel, CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int courseId = viewModel.CourseId;
+            int groupId = viewModel.Id;
+            string name = viewModel.Name;
+
             bool isCourseNotExists = !await _groupsService.IsCourseExistsAsync(courseId, cancellationToken);
             bool isGroupNotExists = !await _groupsService.IsGroupExistsAsync(groupId, cancellationToken);
 
@@ -45,21 +54,27 @@ namespace Task10.UI.ApiControllers
             return NoContent();
         }
 
-        [HttpPost("create/{name}/{courseId:int}")]
+        [HttpPost("create")]
         [ProducesResponseType<Group>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateGroup(string name, int courseId, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupViewModel createGroupViewModel, CancellationToken cancellationToken)
         {
-            bool isCourseNotExists = !await _groupsService.IsCourseExistsAsync(courseId, cancellationToken);
-            
-            if (isCourseNotExists) 
+            if (!ModelState.IsValid)
             {
-                return NotFound($"Course with that id {courseId} not found!");
+                return BadRequest(ModelState);
             }
 
-            await _groupsService.CreateGroupAsync(name, courseId, cancellationToken);
+            bool isCourseNotExists = !await _groupsService.IsCourseExistsAsync(createGroupViewModel.CourseId, cancellationToken);
 
-            return CreatedAtAction(nameof(CreateGroup), new Group() { Name = name, CourseId = courseId });
+            if (isCourseNotExists)
+            {
+                return NotFound($"Course with that id {createGroupViewModel.CourseId} not found!");
+            }
+
+            await _groupsService.CreateGroupAsync(createGroupViewModel.Name, createGroupViewModel.CourseId, cancellationToken);
+
+            return CreatedAtAction(nameof(CreateGroup), new Group() { Name = createGroupViewModel.Name, CourseId = createGroupViewModel.CourseId });
         }
 
         [HttpDelete("delete/{id:int}")]
@@ -69,7 +84,7 @@ namespace Task10.UI.ApiControllers
         {
             bool isGroupNotExists = !await _groupsService.IsGroupExistsAsync(id, cancellationToken);
 
-            if (isGroupNotExists) 
+            if (isGroupNotExists)
             {
                 return NotFound($"Group with that id {id} not found!");
             }

@@ -2,6 +2,7 @@
 using Task10.Core.DTOs;
 using Task10.Core.Interfaces;
 using Task10.Test.Core.Models;
+using Task10.UI.ViewModels;
 
 namespace Task10.UI.ApiControllers
 {
@@ -20,11 +21,22 @@ namespace Task10.UI.ApiControllers
             return Ok(students);
         }
 
-        [HttpPut("edit/{studentId:int}/{groupId:int}/{name}/{lastName}")]
+        [HttpPut()]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> EditStudent(int studentId, int groupId, string name, string lastName, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditStudent([FromBody] EditStudentViewModel viewModel, CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int studentId = viewModel.Id;
+            int groupId = viewModel.GroupId;
+            string name = viewModel.Name;
+            string lastName = viewModel.LastName;
+
             bool isStudentNotExists = !await _studentsService.IsStudentExistsAsync(studentId, cancellationToken);
             bool isGroupNotExists = !await _studentsService.IsGroupExistsAsync(groupId, cancellationToken);
 
@@ -33,7 +45,7 @@ namespace Task10.UI.ApiControllers
                 return NotFound($"Student with that id {studentId} not found!");
             }
 
-            if (isGroupNotExists) 
+            if (isGroupNotExists)
             {
                 return NotFound($"Group with that id {groupId} not found!");
             }
@@ -43,11 +55,21 @@ namespace Task10.UI.ApiControllers
             return NoContent();
         }
 
-        [HttpPost("create/{name}/{lastName}/{groupId:int}")]
+        [HttpPost()]
         [ProducesResponseType<Student>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateStudent(string name, string lastName, int groupId, CancellationToken cancellationToken)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateStudent([FromBody] CreateStudentViewModel viewModel, CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int groupId = viewModel.GroupId;
+            string name = viewModel.Name;
+            string lastName = viewModel.LastName;
+
             bool isGroupNotExists = !await _studentsService.IsGroupExistsAsync(groupId, cancellationToken);
 
             if (isGroupNotExists)

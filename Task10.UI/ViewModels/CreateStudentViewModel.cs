@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Task10.Core.DTOs;
 
 namespace Task10.UI.ViewModels
 {
     public sealed class CreateStudentViewModel
     {
+        [JsonIgnore]
         public IEnumerable<GroupDto> Groups { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
